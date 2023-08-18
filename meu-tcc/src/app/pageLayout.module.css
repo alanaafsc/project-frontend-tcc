@@ -1,0 +1,22 @@
+.toolbar {
+    background-color: white; /* Defina o fundo do Toolbar como branco */
+}
+
+.buttons {
+    display: flex;
+    gap: 8px; /* Espaçamento entre os botões */
+    justify-content: end;
+}
+  
+.myButtons button {
+    color: #333333;
+    font-family: Roboto; 
+    font-weight: 400; 
+    line-height: 12px; 
+    letter-spacing: 3.20px; 
+    word-wrap: break-word
+}
+
+.elements {
+    display: inline-flex;
+}
