@@ -2,7 +2,6 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -10,15 +9,13 @@ import styles from './pageLayout.module.css';
 
 export default function PageLayout() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
       <AppBar position="static">
-        <Toolbar className={styles.toolbar}>
-            <div>
-            <div className={styles.elements}> 
+        <Toolbar>
             <IconButton
                 size="large"
                 edge="start"
-                color="primary"
+                color="inherit"
                 aria-label="menu"
                 sx={{ mr: 1 }}
             >
@@ -27,17 +24,16 @@ export default function PageLayout() {
             <img
                 src="/main_icon.svg" // Caminho para a imagem na pasta public
                 alt="Ícone"
-                width={55} // Largura do ícone
-                height={55} // Altura do ícone
+                width={57} // Largura do ícone
+                height={57} // Altura do ícone
             />
+            <div className={styles.myButtons}>
+                <Button color="inherit">INÍCIO</Button>
+                <Button color="inherit">SOBRE</Button>
+                <Button color="inherit">FASES DO PROCESSO</Button>
+                <Button color="inherit">CONTATO</Button>
             </div>
-            <div className={styles.buttons}> 
-                <Button className={styles.button} color="primary">INÍCIO</Button>
-                <Button className={styles.button} color="primary">SOBRE</Button>
-                <Button className={styles.button} color="primary">FASES DO PROCESSO</Button>
-                <Button className={styles.button} color="primary">CONTATO</Button>
-            </div>
-            </div>
+
         </Toolbar>
       </AppBar>
     </Box>
