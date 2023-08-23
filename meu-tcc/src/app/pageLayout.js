@@ -1,3 +1,5 @@
+'use client'
+
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -6,8 +8,17 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import styles from './pageLayout.module.css'; 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { useRouter } from 'next/navigation'
+
 
 export default function PageLayout() {
+
+  const router = useRouter();
+
   return (
     <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
       <AppBar position="static">
@@ -28,10 +39,10 @@ export default function PageLayout() {
                 height={57} // Altura do ícone
             />
             <div className={styles.myButtons}>
-                <Button color="inherit">INÍCIO</Button>
-                <Button color="inherit">SOBRE</Button>
-                <Button color="inherit">FASES DO PROCESSO</Button>
-                <Button color="inherit">CONTATO</Button>
+                <Button type="button" onClick={() => router.push('/')} color="inherit">INÍCIO</Button>
+                <Button type="button" onClick={() => router.push('/about')} color="inherit">SOBRE</Button>
+                <Button type="button" onClick={() => router.push('/pdp')} color="inherit">FASES DO PROCESSO</Button>
+                <Button type="button" onClick={() => router.push('/')} color="inherit">CONTATO</Button>
             </div>
 
         </Toolbar>

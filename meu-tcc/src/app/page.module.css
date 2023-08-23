@@ -35,4 +35,5 @@
 .rightcolumn {
   flex: 1; /* Vai ocupar todo o espaço restante */
   /* background-color: #ccc; */
+  margin-right: 15px;
 } 
