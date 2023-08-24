@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    height: 100vh; /* 100% da altura da viewport */
+    flex-direction: row;
+}
+
+.table {
+    display: flex;
+    flex: 1;
+    justify-content: start;
+    margin-top: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+    flex-direction: column;
+}
+
+.buttons {
+    display: flex;
+    justify-content: end;
+    margin-right: 55px;
+    gap: 20px;
+    margin-bottom: 25px;
+}
