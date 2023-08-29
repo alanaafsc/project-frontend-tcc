@@ -1,48 +1,109 @@
 'use client'
 
-import PageLayout from '../pageLayout';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import React, { useState } from 'react';
-import Table from '../table';
-import { CardActionArea, CardActions, Card } from '@mui/material';
-import CardContent from '@mui/material/CardContent';
-import styles from './page.module.css'; 
-import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Card, CardActionArea, CardActions } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
+import Fab from '@mui/material/Fab';
+import { useState } from 'react';
 import MenuLateral from '../menu';
+import PageLayout from '../pageLayout';
+import Table from '../table';
+import DeleteProjectDialog from './deleteProjectDialog';
+import FormDialogAddProject from './addProject';
+import EditProjectDialog from './editProject';
+import styles from './page.module.css';
 
-export default function PageOverview() { 
+export default function PageOverview() {
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
+    const handleAddButtonClick = () => {
+        setIsAddDialogOpen(true);
+    };
+
+    const handleEditButtonClick = () => {
+        setIsEditDialogOpen(true);
+    };
+
+    const handleDeleteButtonClick = () => {
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleCloseDialogs = () => {
+        setIsAddDialogOpen(false);
+        setIsEditDialogOpen(false);
+        setIsDeleteDialogOpen(false);
+        // Aqui você pode salvar o objeto projectData em algum estado ou realizar outra ação
+        // por exemplo, setProject(projectData) ou enviar para o backend
+    };
+
+    const handleDelete = (projectId) => {
+        // tratar a exclusão do projeto com o ID projectId
+        console.log('Projeto excluído com o ID:', projectId);
+    };
+
+    const projects = [
+        {
+            id: 1,
+            name: 'Projeto A',
+            description: 'Descrição do Projeto A',
+            phases: ['Projeto Informacional', 'Projeto Conceitual'],
+        },
+        {
+            id: 2,
+            name: 'Projeto B',
+            description: 'Descrição do Projeto B',
+            phases: ['Projeto Conceitual', 'Projeto Preliminar'],
+        },
+        {
+            id: 3,
+            name: 'Projeto C',
+            description: 'Descrição do Projeto C',
+            phases: ['Projeto Preliminar', 'Projeto Detalhado'],
+        },
+    ]; // sera preenchido do banco de dados
+
     return (
-    <>
-    <PageLayout> </PageLayout>
-    <div className={ styles.container } >
-        <MenuLateral/>
-        <div className={styles.table}>
-            <Card>
-                <CardContent>
-                    <Table></Table>
-                </CardContent>
-                <CardActionArea>
-                    <CardActions className={styles.buttons}>
-                        <Fab color="primary" aria-label="add">
-                            <AddIcon />
-                        </Fab>
-                        <Fab color="secondary" aria-label="edit">
-                            <EditIcon />
-                        </Fab>
-                        <Fab color="error" aria-label="delete">
-                            <DeleteIcon />
-                        </Fab>
-                    </CardActions>
-                </CardActionArea>
-            </Card>
-        </div>
-    </div>
-    </>
+        <>
+            <PageLayout> </PageLayout>
+            <div className={styles.container}>
+                <MenuLateral />
+                <div className={styles.table}>
+                    <Card>
+                        <CardContent>
+                            <Table></Table>
+                        </CardContent>
+                        <CardActionArea>
+                            <CardActions className={styles.buttons}>
+                                <Fab color="primary" aria-label="add" onClick={handleAddButtonClick}>
+                                    <AddIcon className={styles.button} />
+                                </Fab>
+                                <Fab color="secondary" aria-label="edit" onClick={handleEditButtonClick}>
+                                    <EditIcon />
+                                </Fab>
+                                <Fab color="error" aria-label="delete" onClick={handleDeleteButtonClick}>
+                                    <DeleteIcon />
+                                </Fab>
+                            </CardActions>
+                        </CardActionArea>
+                    </Card>
+                </div>
+            </div>
+            <FormDialogAddProject open={isAddDialogOpen} onClose={handleCloseDialogs} />
+            <EditProjectDialog open={isEditDialogOpen} onClose={handleCloseDialogs} projects={projects} />
+            <DeleteProjectDialog
+                open={isDeleteDialogOpen}
+                onClose={handleCloseDialogs}
+                projects={projects}
+                onDelete={handleDelete}
+            />
+        </>
     );
-};
+}

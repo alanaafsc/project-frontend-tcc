@@ -4,7 +4,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import LoginIcon from '@mui/icons-material/Login';
+import { HowToReg } from "@mui/icons-material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
@@ -41,39 +41,19 @@ export default function Login() {
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div"
                             style={{ fontWeight: '700', color: '#474747', textAlign: 'center', padding: ' 5px' }}>
-                            Entrar
+                            Registre-se
                         </Typography>
                         <Divider style={{ marginBottom: '15px' }} />
                         <Card style={{ height: '470px' }}>
                             <CardContent className={styles.button}>
-                                <LoginIcon className={styles.button} />
-                                <Typography gutterBottom variant="h6" component="div"
-                                    style={{ color: '#181E25', textAlign: 'center', padding: ' 5px', fontSize: '18px' }}>
-                                    Entre com seu e-mail Google
-                                </Typography>
-                                <Typography variant="body2" gutterBottom style={{ fontSize: '12px', color: '#788BA5' }}>
-                                    Use seu e-mail pessoal para fazer login no espaço de trabalho.
-                                </Typography>
-                                <Button variant="outlined" style={{ gap: '13px', marginTop: '10px', width: '300px', marginBottom: '25px' }}>
-                                    <img
-                                        src="/SVG.svg" // Caminho para a imagem na pasta public
-                                        alt="Ícone"
-                                        width={20} // Largura do ícone
-                                        height={20} // Altura do ícone
-                                        style={{ marginBottom: '4px' }}
-                                    />
-                                    Entre com o Google
-                                </Button>
-                                <Divider style={{ marginBottom: '20px' }}>
-                                    Ou
-                                </Divider>
+                                <HowToReg fontSize="large" className={styles.button} />
                                 <TextField
                                     id="outlined-input"
                                     label="E-mail"
                                     margin="dense"
-                                    sx={{ width: '350px' }}
+                                    sx={{ width: '350px', marginTop: '40px' }}
                                 />
-                                <FormControl sx={{ m: 1, width: '350px' }} variant="outlined">
+                                <FormControl sx={{ width: '350px', marginTop: '4px' }} variant="outlined">
                                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                     <OutlinedInput
                                         id="outlined-adornment-password"
@@ -93,7 +73,14 @@ export default function Login() {
                                         label="Password"
                                     />
                                 </FormControl>
-                                <Button variant="contained" style={{ width: '350px', marginTop: '25px' }}>Entrar</Button>
+                                <TextField
+                                    id="outlined-input"
+                                    label="Telefone"
+                                    margin="dense"
+                                    sx={{ width: '350px' }}
+                                />
+
+                                <Button variant="contained" style={{ width: '350px', marginTop: '25px' }}>Registrar</Button>
                             </CardContent>
                         </Card>
                     </CardContent>

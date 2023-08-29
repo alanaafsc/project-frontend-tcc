@@ -1,48 +1,41 @@
-.container {
+.appContainer {
     display: flex;
-    height: 100vh; /* 100% da altura da viewport */
+    height: 100vh;
     flex-direction: row;
 }
 
-.content {
-    display: flex;
+.contentContainer {
     flex: 1;
+    display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    height: 100vh;
     padding: 20px;
-    gap: 15px;
+    overflow: auto;
+    gap: 20px;
 }
 
-.boxContainer {
+.flexboxUpper {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.flexboxRow {
+    gap: 15px;
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: row;
 }
 
 .box {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-size: 18px;
-    border-radius: 5px;
+    margin-right: 10px;
+    padding: 10px;
 }
 
-.boxFullWidth {
+.card {
+    flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: start;
-    background-color: #e74c3c;
-    color: white;
-    font-size: 18px;
-    border-radius: 5px;
-}
-
-.scrollableContent {
-    width: 100%;
-    height: 100%;
+    flex-direction: column;
     overflow: auto;
+    /* Adicione um scroll interno se necessário */
+    height: fit-content;
+    /* Adicione isso para ajustar automaticamente a altura ao conteúdo */
 }

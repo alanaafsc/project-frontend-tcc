@@ -5,20 +5,12 @@
     flex-direction: row;
 }
 
-.table {
+.box {
     display: flex;
     flex: 1;
     justify-content: start;
     margin-top: 15px;
     margin-left: 10px;
     margin-right: 10px;
-    flex-direction: column;
-}
-
-.buttons {
-    display: flex;
-    justify-content: end;
-    margin-right: 55px;
-    gap: 20px;
-    margin-bottom: 25px;
+    overflow-y: auto;
 }

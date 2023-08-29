@@ -1,10 +1,10 @@
-
-
 .myButtons {
     flex-grow: 1;
     display: flex;
-    gap: 25px; /* Aumente o valor do gap para aumentar o espaçamento */
-    align-items: center; /* Centralizar verticalmente os botões */
-    justify-content: flex-end; /* Alinhar os botões à direita */
+    gap: 25px;
+    /* Aumente o valor do gap para aumentar o espaçamento */
+    align-items: center;
+    /* Centralizar verticalmente os botões */
+    justify-content: flex-end;
+    /* Alinhar os botões à direita */
 }
-

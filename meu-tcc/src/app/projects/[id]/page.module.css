@@ -1,6 +1,7 @@
 .container {
     display: flex;
-    height: 100vh; /* 100% da altura da viewport */
+    height: 100vh;
+    /* 100% da altura da viewport */
     flex-direction: row;
 }
 
@@ -33,9 +34,9 @@
 
 .boxFullWidth {
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: start;
-    color: rgb(44, 43, 43);
+    color: white;
     font-size: 18px;
     border-radius: 5px;
 }
@@ -44,12 +45,4 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-}
-
-.buttons {
-    display: flex;
-    justify-content: end;
-    margin-right: 55px;
-    gap: 20px;
-    margin-bottom: 25px;
 }

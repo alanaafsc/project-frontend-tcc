@@ -4,19 +4,17 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Table, Tag } from 'antd';
-import Link from 'next/link';
+import { DatePicker, Table, Tag } from 'antd';
+
+const { RangePicker } = DatePicker;
+
 
 const columns = [
     {
-        title: 'Projetos',
-        dataIndex: 'projetos',
-        key: 'projetos',
-        render: (text, record) => (
-            <Link href={`/projects/${record.key}`} passHref>
-                {text}
-            </Link>
-        ),
+        title: 'Atividades',
+        dataIndex: 'atividade',
+        key: 'atividade',
+        render: (text) => <a>{text}</a>,
     },
     {
         title: 'Descrição',
@@ -24,14 +22,9 @@ const columns = [
         key: 'descricao',
     },
     {
-        title: 'Fase atual',
-        dataIndex: 'faseatual',
-        key: 'faseatual',
-    },
-    {
-        title: 'Data final',
-        dataIndex: 'datafinal',
-        key: 'datafinal',
+        title: 'Fase do PDP',
+        dataIndex: 'fase',
+        key: 'fase',
     },
     {
         title: 'Status',
@@ -52,31 +45,39 @@ const columns = [
             return <Tag color={color}>{status}</Tag>;
         },
     },
+    {
+        title: 'Data Inicial',
+        dataIndex: 'dataInicial',
+        key: 'dataInicial',
+        render: () => <DatePicker showTime />,
+    },
+    {
+        title: 'Data Final',
+        dataIndex: 'dataFinal',
+        key: 'dataFinal',
+        render: () => <DatePicker showTime />,
+    },
 ];
-
 const data = [
     {
         key: '1',
-        projetos: 'Projeto 1',
+        atividade: 'Atividade',
         descricao: 'Projeto de desenvolvimento  de software',
-        faseatual: 'Projeto Informacional',
-        datafinal: '23/08/2023',
+        fase: 'Fase do PDP',
         status: 'Em andamento',
     },
     {
         key: '2',
-        projetos: 'Projeto 1',
-        descricao: 'Projeto de desenvolvimento  de software Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	',
-        faseatual: 'Projeto Informacional',
-        datafinal: '23/08/2023',
+        atividade: 'Atividade',
+        descricao: 'Projeto de desenvolvimento',
+        fase: 'Fase do PDP',
         status: 'Concluído',
     },
     {
         key: '3',
-        projetos: 'Projeto 1',
+        atividade: 'Atividade',
         descricao: 'Projeto de desenvolvimento  de software',
-        faseatual: 'Projeto Informacional',
-        datafinal: '23/08/2023',
+        fase: 'Fase do PDP',
         status: 'Atrasado',
     },
 ];

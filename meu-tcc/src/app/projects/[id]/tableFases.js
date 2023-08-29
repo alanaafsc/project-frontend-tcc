@@ -1,6 +1,5 @@
 'use client'
 
-import React, { useState } from 'react';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -39,7 +38,7 @@ const columns = [
       } else {
         color = 'default'; // Cor padrão para outros estados
       }
-      
+
       return <Tag color={color}>{status}</Tag>;
     },
   },
@@ -67,5 +66,5 @@ const data = [
     status: 'Atrasado',
   },
 ];
-const TableLayout = () => <Table columns={columns} dataSource={data} />;
+const TableLayout = () => <Table columns={columns} dataSource={data} style={{ width: '990px' }} />;
 export default TableLayout;

@@ -14,7 +14,7 @@ export default function About() {
             <div className={styles.container}>
                 <div className={styles.titleBox}>
                     <Typography variant="h3" gutterBottom fontWeight={500}>
-                        SOBRE O PROJETO
+                        CONTATO
                     </Typography>
                 </div>
                 <Divider variant="middle" />
@@ -29,14 +29,16 @@ export default function About() {
                     </div>
                     <div className={styles.rightBox}>
                         <Typography variant="h4" gutterBottom color={"#4D4D4D"}>
-                            Impulsione seu processo de desenvolvimento de produto
+                            CONTATE-NOS
                         </Typography>
                         <Typography variant="body1" gutterBottom color={"#717171"}>
-                            body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                            blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
-                            neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
-                            quasi quidem quibusdam.
+                            E-mail: alana.ingrid@ufpe.br
                         </Typography>
+                        <Typography variant="body1" gutterBottom color={"#717171"}>
+                            Endereço: Av. da Arquitetura, s/n - Cidade Universitária, Recife - PE, 50740-550
+                            CTG - Centro de Tecnologia e Geociências - UFPE
+                        </Typography>
+
                     </div>
                 </div>
             </div>
