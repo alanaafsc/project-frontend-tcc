@@ -18,9 +18,23 @@ import { useState } from 'react';
 import EditDialogFases from './editDialogFases';
 import styles from './page.module.css';
 import TableLayout from './tableFases';
+import AddDialogFases from './addDialogFases';
+import DeleteDialogFases from './deleteDialogFases';
+
 
 export default function Stages() {
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [activities, setActivities] = useState([]);
+
+    const handleDeleteDialogOpen = () => {
+        setIsDeleteDialogOpen(true);
+    };
+
+    const handleDeleteDialogClose = () => {
+        setIsDeleteDialogOpen(false);
+    };
 
     const handleEditDialogOpen = () => {
         setIsEditDialogOpen(true);
@@ -28,6 +42,14 @@ export default function Stages() {
 
     const handleEditDialogClose = () => {
         setIsEditDialogOpen(false);
+    };
+
+    const handleAddDialogOpen = () => {
+        setIsAddDialogOpen(true);
+    };
+
+    const handleAddDialogClose = () => {
+        setIsAddDialogOpen(false);
     };
 
 
@@ -50,7 +72,7 @@ export default function Stages() {
 
                         <CardActionArea>
                             <CardActions className={styles.buttons}>
-                                <Fab color="primary" aria-label="add">
+                                <Fab color="primary" aria-label="add" onClick={handleAddDialogOpen}>
                                     <AddIcon />
                                 </Fab>
                                 <Fab color="secondary" aria-label="edit" onClick={handleEditDialogOpen}>
@@ -59,12 +81,18 @@ export default function Stages() {
                                 <Fab color="info" aria-label="delete">
                                     <CloudUploadIcon />
                                 </Fab>
-                                <Fab color="error" aria-label="delete">
+                                <Fab color="error" aria-label="delete" onClick={handleDeleteDialogOpen}>
                                     <DeleteIcon />
                                 </Fab>
                             </CardActions>
                         </CardActionArea>
                         <EditDialogFases open={isEditDialogOpen} onClose={handleEditDialogClose} />
+                        <AddDialogFases open={isAddDialogOpen} onClose={handleAddDialogClose} />
+                        <DeleteDialogFases
+                            open={isDeleteDialogOpen}
+                            onClose={handleDeleteDialogClose}
+                            activities={activities}
+                        />
                     </Card>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import {
     DesktopOutlined,
     SnippetsOutlined,
     UserOutlined,
+    LogoutOutlined,
 } from '@ant-design/icons';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -33,6 +34,7 @@ const items = [
     ]),
     getItem('Cronograma', '5', <AppstoreOutlined />),
     getItem('Perfil', '6', <UserOutlined />),
+    getItem('Sair', '7', <LogoutOutlined />),
 ];
 
 export default function MenuLateral() {
@@ -68,6 +70,8 @@ export default function MenuLateral() {
                             handleItemClick('/cronograma'); // Rota para as Cronograma  
                         } else if (key === '6') {
                             handleItemClick('/perfil'); // Rota para as Cronograma  
+                        } else if (key === '7') {
+                            handleItemClick('/'); // Rota para as Cronograma  
                         }
                     }}
                 />

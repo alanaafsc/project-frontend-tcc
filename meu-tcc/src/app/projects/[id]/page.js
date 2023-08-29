@@ -4,9 +4,10 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Card } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { Add } from '@mui/icons-material'; // Importe o ícone Add do Material-UI
+import { Card, CardActionArea, Fab } from '@mui/material'; // Importe o Fab do Material-UI
 import CardContent from '@mui/material/CardContent';
+import { useRouter } from 'next/navigation';
 import MenuLateral from '../../menu';
 import PageLayout from '../../pageLayout';
 import styles from './page.module.css';
@@ -14,17 +15,14 @@ import TableAtividade from './tableAtividade';
 import TableLayout from './tableFases';
 
 export default function Projects({ params }) {
-
     const router = useRouter();
-    const id = params.id; // a partir desse id, renderiza essa pag de acordo com projeto com esse id
+    const id = params.id;
     console.log(id)
-
-// Aqui = pode buscar os detalhes do projeto com base no "id" e renderizar as informações
 
     return (
         <>
             <PageLayout> </PageLayout>
-            <div className={styles.container} >
+            <div className={styles.container}>
                 <MenuLateral />
                 <div className={styles.content}>
                     <Card>
@@ -44,9 +42,19 @@ export default function Projects({ params }) {
                                 </div>
                             </div>
                         </CardContent>
+                        <CardActionArea sx={{padding: '45px', marginBottom: '20px'}}>
+                            <Fab 
+                                color="primary"
+                                size="medium"
+                                aria-label="add"
+                                style={{ position: 'absolute', right: 24, bottom: 50 }} // Ajuste o posicionamento conforme necessário
+                            >
+                                <Add />
+                            </Fab>
+                        </CardActionArea>
                     </Card>
                 </div>
             </div>
         </>
     );
-};
+}
