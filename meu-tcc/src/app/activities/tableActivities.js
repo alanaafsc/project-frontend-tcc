@@ -4,10 +4,13 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import AddIcon from '@mui/icons-material/Add';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import Edit from '@mui/icons-material/Edit';
-import { Button } from '@mui/material';
+import { Button, Fab } from '@mui/material';
 import { Table, Tag } from 'antd';
+import { useState } from 'react';
+import AddDialogAtividades from './addDialogAtividades';
 
 const handleEdit = (record) => {
     // Lógica para lidar com a edição do item com base no "record"
@@ -93,9 +96,31 @@ const data = [
 // O record é o objeto que contém os dados da linha atual da tabela. 
 // Ele é passado automaticamente para a função de renderização que você define na propriedade render da coluna. 
 const TableLayout = () => {
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+    const [atividadesData, setAtividadesData] = useState(data); // data é a sua fonte de dados
 
+    const handleAddDialogOpen = () => {
+        setIsAddDialogOpen(true);
+    };
 
-    return <Table columns={columns} dataSource={data} style={{ width: '990px' }} />;
+    const handleAddDialogClose = () => {
+        setIsAddDialogOpen(false);
+    };
+
+    const handleAddActivity = (newActivityData) => {
+        // Lógica para adicionar a nova atividade aos dados
+        setAtividadesData([...atividadesData, newActivityData]);
+    };
+
+    return (
+        <div>
+            <Table columns={columns} dataSource={atividadesData} style={{ width: '990px' }} />
+            <Fab color="primary" aria-label="add" onClick={handleAddDialogOpen}>
+                <AddIcon />
+            </Fab>
+            <AddDialogAtividades open={isAddDialogOpen} onClose={handleAddDialogClose} onAdd={handleAddActivity} />
+        </div>
+    );
 };
 
 export default TableLayout;

@@ -17,21 +17,50 @@ import {
     OutlinedInput,
     TextField
 } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import React from 'react';
+import React, { useState } from 'react';
 import PageLayout from "../pageLayout";
 import styles from './page.module.css';
 
 export default function Login() {
 
     const [showPassword, setShowPassword] = React.useState(false);
+    const [userExists, setUserExists] = useState(true); // Change to false if user doesn't exist
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    const handleLogin = async () => {
+        // Check if user exists (Replace this with your API call)
+        // Assume the API endpoint is http://localhost:3000/api/user/get
+        try {
+            const response = await fetch('/api/user/get');
+            const data = await response.json();
+            const users = data.users.rows; // Make sure this matches the structure of the API response
+
+            // Replace this logic with your actual user check
+            const userExists = users.some(user => user.email === userEmail && user.password_hash === userPasswordHash);
+            setUserExists(userExists);
+
+            // If user exists, store user login in cache
+            if (userExists) {
+                // Store user login details in cache
+                localStorage.setItem('userLoggedIn', true);
+                // Redirect to dashboard or wherever you want
+                window.location.href = '/overview'; // Replace with your route
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    const userEmail = ''; // Set user email
+    const userPasswordHash = ''; // Set user password hash
 
     return (
         <>
@@ -93,7 +122,12 @@ export default function Login() {
                                         label="Password"
                                     />
                                 </FormControl>
-                                <Button variant="contained" style={{ width: '350px', marginTop: '25px' }}>Entrar</Button>
+                                {!userExists && (
+                                    <Alert severity="error" style={{ marginTop: '10px' }}>
+                                        Usuário não encontrado. Verifique suas credenciais.
+                                    </Alert>
+                                )}
+                                <Button variant="contained" style={{ width: '350px', marginTop: '25px' }} onClick={handleLogin}>Entrar</Button>
                             </CardContent>
                         </Card>
                     </CardContent>
