@@ -5,6 +5,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Table, Tag } from 'antd';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const columns = [
@@ -54,31 +55,61 @@ const columns = [
     },
 ];
 
-const data = [
-    {
-        key: '1',
-        projetos: 'Projeto 1',
-        descricao: 'Projeto de desenvolvimento  de software',
-        faseatual: 'Projeto Informacional',
-        datafinal: '23/08/2023',
-        status: 'Em andamento',
-    },
-    {
-        key: '2',
-        projetos: 'Projeto 1',
-        descricao: 'Projeto de desenvolvimento  de software Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	',
-        faseatual: 'Projeto Informacional',
-        datafinal: '23/08/2023',
-        status: 'Concluído',
-    },
-    {
-        key: '3',
-        projetos: 'Projeto 1',
-        descricao: 'Projeto de desenvolvimento  de software',
-        faseatual: 'Projeto Informacional',
-        datafinal: '23/08/2023',
-        status: 'Atrasado',
-    },
-];
-const TableLayout = () => <Table columns={columns} dataSource={data} />;
+// const data = [
+//     {
+//         key: '1',
+//         projetos: 'Projeto 1',
+//         descricao: 'Projeto de desenvolvimento  de software',
+//         faseatual: 'Projeto Informacional',
+//         datafinal: '23/08/2023',
+//         status: 'Em andamento',
+//     },
+//     {
+//         key: '2',
+//         projetos: 'Projeto 1',
+//         descricao: 'Projeto de desenvolvimento  de software Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	',
+//         faseatual: 'Projeto Informacional',
+//         datafinal: '23/08/2023',
+//         status: 'Concluído',
+//     },
+//     {
+//         key: '3',
+//         projetos: 'Projeto 1',
+//         descricao: 'Projeto de desenvolvimento  de software',
+//         faseatual: 'Projeto Informacional',
+//         datafinal: '23/08/2023',
+//         status: 'Atrasado',
+//     },
+// ];
+
+const TableLayout = () => {
+    const [projectsData, setProjectsData] = useState([]); // Estado para armazenar dados dos projetos
+
+    useEffect(() => {
+        // Recupera a lista de projetos da API ao carregar a página
+        fetch('/api/projects/get')
+            .then(response => response.json())
+            .then(data => {
+                if (data.projects && data.projects.rows) {
+                    setProjectsData(data.projects.rows);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching projects:', error);
+            });
+    }, []);
+
+    const data = projectsData.map(project => ({
+        key: project.id.toString(),
+        projetos: project.name,
+        descricao: project.description,
+        // Adicione aqui a lógica para obter a fase atual e a data final do projeto
+        faseatual: 'Fase Atual', // Substitua pelo valor correto
+        datafinal: 'Data Final', // Substitua pelo valor correto
+        status: 'Status', // Substitua pelo valor correto
+    }));
+
+    return <Table columns={columns} dataSource={data} />;
+};
+
 export default TableLayout;

@@ -5,7 +5,6 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { HowToReg } from "@mui/icons-material";
-import Link from 'next/link';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
@@ -21,11 +20,16 @@ import {
 import Alert from '@mui/material/Alert';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import PageLayout from "../pageLayout";
 import styles from './page.module.css';
 
+
 export default function Register() {
+
+    const router = useRouter();
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [registrationSuccess, setRegistrationSuccess] = useState(null);
@@ -136,6 +140,13 @@ export default function Register() {
                                     onClick={handleRegister}
                                 >
                                     Registrar
+                                </Button>
+                                <Button
+                                    variant="outlined"
+                                    style={{ width: '350px', marginTop: '10px' }}
+                                    onClick={() => router.push('/login')}
+                                >
+                                    Login
                                 </Button>
                             </CardContent>
                         </Card>

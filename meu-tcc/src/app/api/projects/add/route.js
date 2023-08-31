@@ -1,35 +1,39 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function addProject(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function POST(request) {
+  const requestBody = await request.text(); // Lê o corpo da solicitação como texto
+  const { name, description, currentPhaseId, phases } = JSON.parse(requestBody);
+
+  const parsedCurrentPhaseId = currentPhaseId !== '' ? parseInt(currentPhaseId) : null;
 
   try {
-    const { name, description, currentPhaseId } = req.body;
-
     // Adicione o projeto
     const projectResult = await sql`
       INSERT INTO Projects (name, description, current_phase_id)
-      VALUES (${name}, ${description}, ${currentPhaseId})
+      VALUES (${name}, ${description}, ${parsedCurrentPhaseId})
       RETURNING *;
     `;
 
-    const projectId = projectResult[0].id;
+    if (projectResult && projectResult.rows[0]) {
+      const newProject = projectResult.rows[0];
+      const projectId = newProject.id;
 
-    // Atualize as fases relacionadas ao projeto
-    const phasesToAdd = req.body.phasesToAdd || [];
-    if (phasesToAdd.length > 0) {
-      await sql`
-        UPDATE Phases
-        SET project_id = ${projectId}
-        WHERE id IN (${phasesToAdd});
-      `;
+      // Adicione as fases associadas ao projeto
+      for (const phaseName of phases) {
+        await sql`
+            INSERT INTO Phases (name, project_id)
+            VALUES (${phaseName}, ${projectId});
+        `;
+      }
+      // Retorne o novo projeto criado
+      return NextResponse.json({ newProject }, { status: 201 });
+    } else {
+      console.error('Error inserting project into database or retrieving new project data');
+      return NextResponse.json({ error: 'Error adding project' }, { status: 500 });
     }
-
-    res.status(201).json(projectResult[0]);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error adding project' });
+    console.error('Error inserting project into database:', error);
+    return NextResponse.json({ error: 'Error adding project' }, { status: 500 });
   }
 }

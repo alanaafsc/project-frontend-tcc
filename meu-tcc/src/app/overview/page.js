@@ -10,19 +10,37 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Card, CardActionArea, CardActions } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Fab from '@mui/material/Fab';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MenuLateral from '../menu';
 import PageLayout from '../pageLayout';
 import Table from '../table';
-import DeleteProjectDialog from './deleteProjectDialog';
 import FormDialogAddProject from './addProject';
+import DeleteProjectDialog from './deleteProjectDialog';
 import EditProjectDialog from './editProject';
 import styles from './page.module.css';
 
 export default function PageOverview() {
+
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [projects, setProjects] = useState([]); // Estado para armazenar a lista de projetos
+
+    useEffect(() => {
+        // Recupera a lista de projetos da API ao carregar a página
+        fetch('/api/projects/get')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data from API:', data.projects.rows);
+                if (data.projects && data.projects.rows) {
+                    setProjects(data.projects.rows);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching projects:', error);
+            });
+    }, []);
+        
 
     const handleAddButtonClick = () => {
         setIsAddDialogOpen(true);
@@ -49,26 +67,31 @@ export default function PageOverview() {
         console.log('Projeto excluído com o ID:', projectId);
     };
 
-    const projects = [
-        {
-            id: 1,
-            name: 'Projeto A',
-            description: 'Descrição do Projeto A',
-            phases: ['Projeto Informacional', 'Projeto Conceitual'],
-        },
-        {
-            id: 2,
-            name: 'Projeto B',
-            description: 'Descrição do Projeto B',
-            phases: ['Projeto Conceitual', 'Projeto Preliminar'],
-        },
-        {
-            id: 3,
-            name: 'Projeto C',
-            description: 'Descrição do Projeto C',
-            phases: ['Projeto Preliminar', 'Projeto Detalhado'],
-        },
-    ]; // sera preenchido do banco de dados
+    const handleProjectAdd = (newProject) => {
+        // Aqui você pode atualizar a lista de projetos com o novo projeto
+        console.log('Novo projeto criado:', newProject);
+    };
+
+    // const projects = [
+    //     {
+    //         id: 1,
+    //         name: 'Projeto A',
+    //         description: 'Descrição do Projeto A',
+    //         phases: ['Projeto Informacional', 'Projeto Conceitual'],
+    //     },
+    //     {
+    //         id: 2,
+    //         name: 'Projeto B',
+    //         description: 'Descrição do Projeto B',
+    //         phases: ['Projeto Conceitual', 'Projeto Preliminar'],
+    //     },
+    //     {
+    //         id: 3,
+    //         name: 'Projeto C',
+    //         description: 'Descrição do Projeto C',
+    //         phases: ['Projeto Preliminar', 'Projeto Detalhado'],
+    //     },
+    // ]; // sera preenchido do banco de dados
 
     return (
         <>
@@ -96,7 +119,10 @@ export default function PageOverview() {
                     </Card>
                 </div>
             </div>
-            <FormDialogAddProject open={isAddDialogOpen} onClose={handleCloseDialogs} />
+            <FormDialogAddProject
+                open={isAddDialogOpen}
+                onClose={handleCloseDialogs}
+                onAdd={handleProjectAdd} />
             <EditProjectDialog open={isEditDialogOpen} onClose={handleCloseDialogs} projects={projects} />
             <DeleteProjectDialog
                 open={isDeleteDialogOpen}

@@ -20,20 +20,20 @@ import {
 import Alert from '@mui/material/Alert';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import bcrypt from 'bcryptjs';
+import { useEffect, useState } from 'react';
 import PageLayout from "../pageLayout";
 import styles from './page.module.css';
 
-export default function Login() {
 
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [userExists, setUserExists] = useState(true); // Change to false if user doesn't exist
+export default function Login() {
+    const [showPassword, setShowPassword] = useState(false);
+    const [userExists, setUserExists] = useState(true);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+    const handleMouseDownPassword = (event) => event.preventDefault();
 
     const handleLogin = async () => {
         // Check if user exists (Replace this with your API call)
@@ -41,26 +41,27 @@ export default function Login() {
         try {
             const response = await fetch('/api/user/get');
             const data = await response.json();
-            const users = data.users.rows; // Make sure this matches the structure of the API response
+            const users = data.users.rows;
 
-            // Replace this logic with your actual user check
-            const userExists = users.some(user => user.email === userEmail && user.password_hash === userPasswordHash);
-            setUserExists(userExists);
+            const user = users.find(user => user.email === email);
 
-            // If user exists, store user login in cache
-            if (userExists) {
-                // Store user login details in cache
-                localStorage.setItem('userLoggedIn', true);
-                // Redirect to dashboard or wherever you want
-                window.location.href = '/overview'; // Replace with your route
+            if (user && bcrypt.compareSync(password, user.password_hash)) {
+                localStorage.setItem('userLoggedIn', 'true');
+                window.location.href = '/overview';
+            } else {
+                setUserExists(false);
             }
         } catch (error) {
             console.error('Error fetching user data:', error);
         }
     };
 
-    const userEmail = ''; // Set user email
-    const userPasswordHash = ''; // Set user password hash
+    useEffect(() => {
+        const userLoggedIn = localStorage.getItem('userLoggedIn');
+        if (userLoggedIn) {
+            window.location.href = '/overview';
+        }
+    }, []);
 
     return (
         <>
@@ -101,6 +102,8 @@ export default function Login() {
                                     label="E-mail"
                                     margin="dense"
                                     sx={{ width: '350px' }}
+                                    value={email} // Valor atual do estado 'email'
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <FormControl sx={{ m: 1, width: '350px' }} variant="outlined">
                                     <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
@@ -120,6 +123,8 @@ export default function Login() {
                                             </InputAdornment>
                                         }
                                         label="Password"
+                                        value={password} // Valor atual do estado 'password'
+                                        onChange={(e) => setPassword(e.target.value)} // Atualiza o estado 'password' quando o valor muda
                                     />
                                 </FormControl>
                                 {!userExists && (

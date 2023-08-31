@@ -40,8 +40,34 @@ const items = [
 export default function MenuLateral() {
     const [collapsed, setCollapsed] = useState(false);
     const router = useRouter();
-    const handleItemClick = (route) => {
-        router.push(route);
+
+    const handleItemClick = (key) => {
+        if (key === '7') {
+            handleLogout();
+        } else {
+            handleRouteClick(key);
+        }
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('userLoggedIn');
+        router.push('/');
+    };
+
+    const handleRouteClick = (key) => {
+        if (key === '1') {
+            router.push('/overview');
+        } else if (key === '2') {
+            router.push('/projects/1');
+        } else if (key === '3') {
+            router.push('/stages/1');
+        } else if (key === '4') {
+            router.push('/activities');
+        } else if (key === '5') {
+            router.push('/cronograma');
+        } else if (key === '6') {
+            router.push('/perfil');
+        }
     };
 
     return (
@@ -58,21 +84,7 @@ export default function MenuLateral() {
                     inlineCollapsed={collapsed}
                     items={items}
                     onClick={({ key }) => {
-                        if (key === '1') {
-                            handleItemClick('/overview'); // Rota para o Overview
-                        } else if (key === '2') {
-                            handleItemClick('/projects/1'); // Rota para as Projetos
-                        } else if (key === '3') {
-                            handleItemClick('/stages/1'); // Rota para as Fases
-                        } else if (key === '4') {
-                            handleItemClick('/activities'); // Rota para as Atividades
-                        } else if (key === '5') {
-                            handleItemClick('/cronograma'); // Rota para as Cronograma  
-                        } else if (key === '6') {
-                            handleItemClick('/perfil'); // Rota para as Cronograma  
-                        } else if (key === '7') {
-                            handleItemClick('/'); // Rota para as Cronograma  
-                        }
+                        handleItemClick(key);
                     }}
                 />
             </div>

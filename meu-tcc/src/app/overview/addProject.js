@@ -9,10 +9,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 
-export default function FormDialogAddProject({ open, onClose }) {
+export default function FormDialogAddProject({ open, onClose, onAdd }) {
     const [projectData, setProjectData] = useState({
         name: '',
         description: '',
+        currentPhaseId: '',
         phases: [],
     });
 
@@ -35,8 +36,37 @@ export default function FormDialogAddProject({ open, onClose }) {
     };
 
     const handleClose = () => {
-        onClose(projectData); // Pass projectData to the onClose callback
+        onClose();
     };
+
+    const handleCreateProject = async () => {
+        try {
+            const response = await fetch('/api/projects/add', {
+                method: 'POST', // Correção: Usar o método POST
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: projectData.name,
+                    description: projectData.description,
+                    currentPhaseId: projectData.currentPhaseId,
+                    phasesToAdd: projectData.phases, // Correção: Enviar o array de fases
+                }),
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                const newProject = data.newProject; // Obtenha o novo projeto do objeto retornado
+                onAdd(newProject); // Chamando a função onAdd com o novo projeto criado
+                onClose(); // Fechando o diálogo após a adição bem-sucedida
+            } else {
+                // Trate o erro aqui, se necessário
+            }
+        } catch (error) {
+            console.error('Error creating project:', error);
+        }
+    };
+    
 
     return (
         <div>
@@ -116,7 +146,7 @@ export default function FormDialogAddProject({ open, onClose }) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancelar</Button>
-                    <Button onClick={handleClose}>Criar Projeto</Button>
+                    <Button onClick={handleCreateProject}>Criar Projeto</Button>
                 </DialogActions>
             </Dialog>
         </div>
