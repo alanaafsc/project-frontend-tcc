@@ -10,13 +10,20 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import * as React from 'react';
 
-export default function EditProjectDialog({ open, onClose, projects }) {
+export default function EditProjectDialog({ open, onClose, projects, setProjects }) {
     const [selectedProject, setSelectedProject] = React.useState('');
     const [projectData, setProjectData] = React.useState({
         name: '',
         description: '',
         phases: [],
     });
+
+    const handleFieldChange = (field, value) => {
+        setProjectData((prevData) => ({
+            ...prevData,
+            [field]: value,
+        }));
+    };
 
     const handleClose = () => {
         onClose();
@@ -29,10 +36,37 @@ export default function EditProjectDialog({ open, onClose, projects }) {
         setProjectData(selectedProjectData);
     };
 
-    const handleSave = () => {
-        // Aqui você pode salvar o projeto atualizado no banco de dados
-        // projectData contém os dados atualizados do projeto
-        handleClose();
+    const handleSave = async () => {
+        try {
+            const response = await fetch('/api/projects/edit', {
+                method: 'PUT', // Use o método PUT para atualizar o projeto
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: selectedProject,
+                    name: projectData.name,
+                    description: projectData.description,
+                    currentPhaseId: projectData.currentPhaseId,
+                    phasesToAdd: projectData.phases,
+                }),
+            });
+
+            if (response.ok) {
+                // Atualize a lista de projetos com as informações atualizadas do projeto
+                const updatedProjects = projects.map((project) =>
+                    project.id === selectedProject ? { ...project, name: projectData.name, description: projectData.description } : project
+                );
+                setProjects(updatedProjects);
+
+                onClose(); // Feche o diálogo após a edição bem-sucedida
+                window.location.reload(); // Recarregue a página para refletir as atualizações
+            } else {
+                // Trate o erro aqui, se necessário
+            }
+        } catch (error) {
+            console.error('Error editing project:', error);
+        }
     };
 
     return (
@@ -40,7 +74,7 @@ export default function EditProjectDialog({ open, onClose, projects }) {
             <DialogTitle>Editar Projeto</DialogTitle>
             <DialogContent>
                 <DialogContentText
-                sx={{marginBottom: '10px'}}
+                    sx={{ marginBottom: '10px' }}
                 >Selecione um projeto para editar:</DialogContentText>
                 <TextField
                     select
@@ -49,7 +83,7 @@ export default function EditProjectDialog({ open, onClose, projects }) {
                     fullWidth
                     value={selectedProject}
                     onChange={handleProjectChange}
-                    sx={{marginBottom: '10px'}}
+                    sx={{ marginBottom: '10px' }}
                 >
                     {projects.map((project) => (
                         <MenuItem key={project.id} value={project.id}>
@@ -64,8 +98,9 @@ export default function EditProjectDialog({ open, onClose, projects }) {
                     label="Nome do Projeto"
                     fullWidth
                     value={projectData.name}
+                    onChange={(e) => handleFieldChange('name', e.target.value)}
                     variant="standard"
-                    sx={{marginBottom: '10px'}}
+                    sx={{ marginBottom: '10px' }}
                 />
                 <TextField
                     margin="dense"
@@ -74,6 +109,7 @@ export default function EditProjectDialog({ open, onClose, projects }) {
                     fullWidth
                     rows={4}
                     value={projectData.description}
+                    onChange={(e) => handleFieldChange('description', e.target.value)}
                     variant="standard"
                 />
                 {/* Aqui você pode adicionar os campos para selecionar as fases do PDP */}

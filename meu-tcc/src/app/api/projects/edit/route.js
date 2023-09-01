@@ -1,12 +1,11 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function editProject(req, res) {
-  if (req.method !== 'PUT') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function PUT(request) {
+  const requestBody = await request.text();
+  const { id, name, description, currentPhaseId, phasesToAdd } = JSON.parse(requestBody);
 
   try {
-    const { id, name, description, currentPhaseId, phasesToAdd } = req.body;
 
     // Atualize o projeto
     const projectResult = await sql`
@@ -25,9 +24,9 @@ export default async function editProject(req, res) {
       `;
     }
 
-    res.status(200).json(projectResult[0]);
+    return NextResponse.json({ projectResult }, { status: 201 });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error editing project' });
+    return NextResponse.json({ error: 'Error editing project' }, { status: 500 });
   }
 }

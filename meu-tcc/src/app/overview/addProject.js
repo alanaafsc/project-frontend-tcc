@@ -7,7 +7,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function FormDialogAddProject({ open, onClose, onAdd }) {
     const [projectData, setProjectData] = useState({
@@ -36,6 +36,13 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
     };
 
     const handleClose = () => {
+        // Limpe os campos do estado projectData
+        setProjectData({
+            name: '',
+            description: '',
+            currentPhaseId: '',
+            phases: [],
+        });
         onClose();
     };
 
@@ -66,7 +73,7 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
             console.error('Error creating project:', error);
         }
     };
-    
+
 
     return (
         <div>

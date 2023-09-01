@@ -21,9 +21,28 @@ export default function DeleteProjectDialog({ open, onClose, projects, onDelete 
         onClose();
     };
 
-    const handleDelete = () => {
-        onDelete(selectedProjectId);
-        handleClose();
+    const handleDelete = async () => {
+        try {
+            const response = await fetch('/api/projects/delete', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: selectedProjectId,
+                }),
+            });
+    
+            if (response.ok) {
+                onDelete(selectedProjectId); // Remova o projeto excluído da lista local
+                handleClose();
+                window.location.reload(); // Recarregue a página para refletir as atualizações
+            } else {
+                // Trate o erro aqui, se necessário
+            }
+        } catch (error) {
+            console.error('Error deleting project:', error);
+        }
     };
 
     return (

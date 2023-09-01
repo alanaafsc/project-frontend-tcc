@@ -1,12 +1,17 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function deleteProject(req, res) {
-  if (req.method !== 'DELETE') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function DELETE(request) {
+  const requestBody = await request.text();
+  const { id } = JSON.parse(requestBody);
 
   try {
-    const { id } = req.body;
+     // Limpe as referências das fases associadas ao projeto
+     await sql`
+     UPDATE Phases
+     SET project_id = NULL
+     WHERE project_id = ${id};
+   `;
 
     // Exclua o projeto
     const projectResult = await sql`
@@ -15,16 +20,9 @@ export default async function deleteProject(req, res) {
       RETURNING *;
     `;
 
-    // Limpe as referências das fases associadas ao projeto
-    await sql`
-      UPDATE Phases
-      SET project_id = NULL
-      WHERE project_id = ${id};
-    `;
-
-    res.status(200).json(projectResult[0]);
+    return NextResponse.json({ projectResult }, { status: 201 });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error deleting project' });
+    return NextResponse.json({ error: 'Error deleting project' }, { status: 500 });
   }
 }

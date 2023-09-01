@@ -1,23 +1,32 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function addActivity(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end(); // Método não permitido
-  }
-
+export async function POST(request) {
+  const requestBody = await request.text();
+  const { name, description, status, projectId, phaseId } = JSON.parse(requestBody);
   try {
-    const { name, description, status, phaseId } = req.body;
+    // Verifique se o projeto e a fase fornecidos são válidos antes de prosseguir
+    const project = await sql`SELECT * FROM Projects WHERE id = ${projectId}`;
+    if (!project.rows[0]) {
+      return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
+    }
 
-    // Adicione a atividade
+    const phase = await sql`SELECT * FROM Phases WHERE id = ${phaseId} AND project_id = ${projectId}`;
+    if (!phase.rows[0]) {
+      return NextResponse.json({ error: 'Invalid phase ID for the selected project' }, { status: 400 });
+    }
+
+    // Adicione a atividade com os dados fornecidos
     const activityResult = await sql`
       INSERT INTO Activities (name, description, status, phase_id)
       VALUES (${name}, ${description}, ${status}, ${phaseId})
       RETURNING *;
     `;
 
-    res.status(201).json(activityResult[0]);
+    return NextResponse.json({ activityResult }, { status: 201 });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error adding activity' });
+    return NextResponse.json({ error: 'Error adding activity' }, { status: 500 });
   }
 }
+

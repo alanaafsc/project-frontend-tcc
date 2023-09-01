@@ -108,8 +108,11 @@ const TableLayout = () => {
     };
 
     const handleAddActivity = (newActivityData) => {
-        // Lógica para adicionar a nova atividade aos dados
+        // Atualize o estado com os dados da nova atividade
         setAtividadesData([...atividadesData, newActivityData]);
+
+        // Recarregue a página usando window.location.reload()
+        window.location.reload();
     };
 
     return (

@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const requestBody = await request.text(); // Lê o corpo da solicitação como texto
-  const { name, description, currentPhaseId, phases } = JSON.parse(requestBody);
-
+  const { name, description, currentPhaseId, phasesToAdd } = JSON.parse(requestBody);
   const parsedCurrentPhaseId = currentPhaseId !== '' ? parseInt(currentPhaseId) : null;
 
   try {
@@ -20,7 +19,7 @@ export async function POST(request) {
       const projectId = newProject.id;
 
       // Adicione as fases associadas ao projeto
-      for (const phaseName of phases) {
+      for (const phaseName of phasesToAdd) {
         await sql`
             INSERT INTO Phases (name, project_id)
             VALUES (${phaseName}, ${projectId});

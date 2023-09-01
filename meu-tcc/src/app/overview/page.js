@@ -62,36 +62,27 @@ export default function PageOverview() {
         // por exemplo, setProject(projectData) ou enviar para o backend
     };
 
-    const handleDelete = (projectId) => {
-        // tratar a exclusão do projeto com o ID projectId
-        console.log('Projeto excluído com o ID:', projectId);
+    const handleDelete = async (projectId) => {
+        try {
+            const updatedProjects = projects.filter((project) => project.id !== projectId);
+            setProjects(updatedProjects);
+        } catch (error) {
+            console.error('Error handling project deletion:', error);
+        }
     };
 
     const handleProjectAdd = (newProject) => {
         // Aqui você pode atualizar a lista de projetos com o novo projeto
         console.log('Novo projeto criado:', newProject);
-    };
+            // Atualize a lista de projetos com o novo projeto
+        setProjects((prevProjects) => [...prevProjects, newProject]);
 
-    // const projects = [
-    //     {
-    //         id: 1,
-    //         name: 'Projeto A',
-    //         description: 'Descrição do Projeto A',
-    //         phases: ['Projeto Informacional', 'Projeto Conceitual'],
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'Projeto B',
-    //         description: 'Descrição do Projeto B',
-    //         phases: ['Projeto Conceitual', 'Projeto Preliminar'],
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'Projeto C',
-    //         description: 'Descrição do Projeto C',
-    //         phases: ['Projeto Preliminar', 'Projeto Detalhado'],
-    //     },
-    // ]; // sera preenchido do banco de dados
+        // Feche o diálogo de adição de projeto
+        handleCloseDialogs();
+
+        // Recarregue a página após adicionar o projeto
+        window.location.reload();
+    };
 
     return (
         <>
@@ -123,7 +114,7 @@ export default function PageOverview() {
                 open={isAddDialogOpen}
                 onClose={handleCloseDialogs}
                 onAdd={handleProjectAdd} />
-            <EditProjectDialog open={isEditDialogOpen} onClose={handleCloseDialogs} projects={projects} />
+            <EditProjectDialog open={isEditDialogOpen} onClose={handleCloseDialogs} projects={projects} setProjects={setProjects} />
             <DeleteProjectDialog
                 open={isDeleteDialogOpen}
                 onClose={handleCloseDialogs}
