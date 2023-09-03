@@ -13,7 +13,6 @@ import TableLayout from './tableActivities';
 import TableAtividade from './tableAtividade';
 import TableFase from './tableFase';
 
-
 export default function Activities() {
     return (
         <>

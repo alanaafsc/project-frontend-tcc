@@ -15,7 +15,7 @@
     "@fontsource/roboto": "^5.0.8",
     "@mui/icons-material": "^5.14.3",
     "@mui/material": "^5.14.6",
-    "@mui/x-date-pickers": "^6.11.2",
+    "@mui/x-date-pickers": "^6.12.1",
     "@vercel/postgres": "^0.4.1",
     "antd": "^5.8.4",
     "bcrypt": "^5.1.1",

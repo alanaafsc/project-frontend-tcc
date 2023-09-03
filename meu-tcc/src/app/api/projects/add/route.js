@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request) {
   const requestBody = await request.text(); // Lê o corpo da solicitação como texto
-  const { name, description, currentPhaseId, phasesToAdd } = JSON.parse(requestBody);
+  const { name, description, currentPhaseId, prazo_inicial, prazo_final, phasesToAdd } = JSON.parse(requestBody);
   const parsedCurrentPhaseId = currentPhaseId !== '' ? parseInt(currentPhaseId) : null;
 
   try {
     // Adicione o projeto
     const projectResult = await sql`
-      INSERT INTO Projects (name, description, current_phase_id)
-      VALUES (${name}, ${description}, ${parsedCurrentPhaseId})
+      INSERT INTO Projects (name, description, current_phase_id, prazo_inicial, prazo_final)
+      VALUES (${name}, ${description}, ${parsedCurrentPhaseId}, ${prazo_inicial}, ${prazo_final})
       RETURNING *;
     `;
 
@@ -19,12 +19,25 @@ export async function POST(request) {
       const projectId = newProject.id;
 
       // Adicione as fases associadas ao projeto
+      const phaseIds = [];
+
       for (const phaseName of phasesToAdd) {
-        await sql`
-            INSERT INTO Phases (name, project_id)
-            VALUES (${phaseName}, ${projectId});
-        `;
+          const idPhase = await sql`
+              INSERT INTO Phases (name, project_id)
+              VALUES (${phaseName}, ${projectId})
+              RETURNING id;
+          `;
+          // Adicione o ID retornado ao array phaseIds
+          phaseIds.push(idPhase.rows[0].id);
       }
+      console.log(phaseIds[0])
+      const updatedProject = await sql`
+      UPDATE projects
+      SET current_phase_id = ${phaseIds[0]}
+      WHERE id = ${projectId}
+      RETURNING *;
+    `;
+
       // Retorne o novo projeto criado
       return NextResponse.json({ newProject }, { status: 201 });
     } else {

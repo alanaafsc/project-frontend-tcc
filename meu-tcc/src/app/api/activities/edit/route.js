@@ -1,24 +1,23 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function editActivity(req, res) {
-  if (req.method !== 'PUT') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function PUT(request) {
+  const requestBody = await request.text();
+  const { id, name, description, status, phase_id } = JSON.parse(requestBody);
 
   try {
-    const { id, name, description, status, phaseId } = req.body;
 
     // Atualize a atividade
     const activityResult = await sql`
-      UPDATE Activities
-      SET name = ${name}, description = ${description}, status = ${status}, phase_id = ${phaseId}
+      UPDATE activities
+      SET name = ${name}, description = ${description}, status = ${status}, phase_id = ${phase_id}
       WHERE id = ${id}
       RETURNING *;
     `;
 
-    res.status(200).json(activityResult[0]);
+    return NextResponse.json({ activityResult }, { status: 201 });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error editing activity' });
+    return NextResponse.json({ error: 'Error editing activity' }, { status: 500 });
   }
 }

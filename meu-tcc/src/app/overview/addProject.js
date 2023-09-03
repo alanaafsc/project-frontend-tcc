@@ -7,18 +7,30 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import TextField from '@mui/material/TextField';
-import { useState, useEffect } from 'react';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import dayjs from 'dayjs';
+import * as React from 'react';
+import { useState } from 'react';
 
 export default function FormDialogAddProject({ open, onClose, onAdd }) {
+
     const [projectData, setProjectData] = useState({
         name: '',
         description: '',
         currentPhaseId: '',
+        prazo_inicial: dayjs(), // Use dayjs para a data inicial
+        prazo_final: dayjs(),
         phases: [],
     });
 
     const handleFieldChange = (field, value) => {
-        setProjectData((prevData) => ({ ...prevData, [field]: value }));
+        setProjectData((prevData) => ({
+            ...prevData,
+            [field]: value,
+        }));
     };
 
     const handlePhaseChange = (phase, isChecked) => {
@@ -41,6 +53,8 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
             name: '',
             description: '',
             currentPhaseId: '',
+            prazo_inicial: dayjs(), // Use dayjs para a data inicial
+            prazo_final: dayjs(),
             phases: [],
         });
         onClose();
@@ -57,10 +71,12 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
                     name: projectData.name,
                     description: projectData.description,
                     currentPhaseId: projectData.currentPhaseId,
+                    prazo_inicial: projectData.prazo_inicial.toISOString().split('T')[0], // Converter a data em string
+                    prazo_final: projectData.prazo_final.toISOString().split('T')[0], // Converter a data em string
                     phasesToAdd: projectData.phases, // Correção: Enviar o array de fases
                 }),
             });
-    
+
             if (response.ok) {
                 const data = await response.json();
                 const newProject = data.newProject; // Obtenha o novo projeto do objeto retornado
@@ -147,9 +163,24 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
                         type="text"
                         fullWidth
                         variant="standard"
+                        sx={{ marginBottom:'30px' }}
                         value={projectData.description}
                         onChange={(e) => handleFieldChange('description', e.target.value)}
                     />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['DatePicker', 'DatePicker']}>
+                            <DatePicker
+                                label="Prazo inicial"
+                                value={projectData.prazo_inicial}
+                                onChange={(date) => handleFieldChange('prazo_inicial', date)}
+                            />
+                            <DatePicker
+                                label="Prazo final"
+                                value={projectData.prazo_final}
+                                onChange={(date) => handleFieldChange('prazo_final', date)}
+                            />
+                        </DemoContainer>
+                    </LocalizationProvider>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancelar</Button>

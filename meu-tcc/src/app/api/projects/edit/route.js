@@ -3,14 +3,14 @@ import { NextResponse } from 'next/server';
 
 export async function PUT(request) {
   const requestBody = await request.text();
-  const { id, name, description, currentPhaseId, phasesToAdd } = JSON.parse(requestBody);
+  const { id, name, description, currentPhaseId, prazo_inicial, prazo_final, phasesToAdd } = JSON.parse(requestBody);
 
   try {
 
     // Atualize o projeto
     const projectResult = await sql`
       UPDATE Projects
-      SET name = ${name}, description = ${description}, current_phase_id = ${currentPhaseId}
+      SET name = ${name}, description = ${description}, current_phase_id = ${currentPhaseId}, prazo_inicial = ${prazo_inicial}, prazo_final = ${prazo_final}
       WHERE id = ${id}
       RETURNING *;
     `;

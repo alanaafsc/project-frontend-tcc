@@ -30,6 +30,11 @@ const columns = [
         key: 'faseatual',
     },
     {
+        title: 'Data inicial',
+        dataIndex: 'datainicial',
+        key: 'datafinal',
+    },
+    {
         title: 'Data final',
         dataIndex: 'datafinal',
         key: 'datafinal',
@@ -91,6 +96,7 @@ const TableLayout = () => {
             .then(response => response.json())
             .then(data => {
                 if (data.projects && data.projects.rows) {
+                    console.log(data.projects.rows)
                     setProjectsData(data.projects.rows);
                 }
             })
@@ -103,9 +109,9 @@ const TableLayout = () => {
         key: project.id.toString(),
         projetos: project.name,
         descricao: project.description,
-        // Adicione aqui a lógica para obter a fase atual e a data final do projeto
-        faseatual: 'Fase Atual', // Substitua pelo valor correto
-        datafinal: 'Data Final', // Substitua pelo valor correto
+        faseatual: project.current_phase_id, // Substitua pelo valor correto
+        datainicial: project.prazo_inicial, // Substitua pelo campo correto da data inicial no seu objeto
+        datafinal: project.prazo_final,
         status: 'Status', // Substitua pelo valor correto
     }));
 
