@@ -26,41 +26,13 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
         currentPhaseId: '',
         prazo_inicial: dayjs(), // Use dayjs para a data inicial
         prazo_final: dayjs(),
-        phases: {
-            'Projeto Informacional': false,
-            'Projeto Conceitual': false,
-            'Projeto Preliminar': false,
-            'Projeto Detalhado': false,
-        },
     });
-    const [projectPhases, setProjectPhases] = useState([]);
-
-
-    const fetchPhases = async (project) => {
-        try {
-            const response = await fetch(`/api/phase/get/project?phaseId=${project.current_phase_id
-                }`);
-            console.log('response: ', response)
-            if (response.ok) {
-                const data = await response.json();
-                setProjectPhases(data.phases.rows);
-            } else {
-                console.error('Error fetching project phases:', response.statusText);
-                setProjectPhases([]);
-            }
-        } catch (error) {
-            console.error('Error fetching project phases:', error);
-            setProjectPhases([]);
-        }
-    };
 
     useEffect(() => {
         if (selectedProject) {
             const selectedProjectData = projects.find((project) => project.id === selectedProject);
             setProjectData(selectedProjectData);
 
-            // Chame a função para buscar as fases associadas ao projeto
-            fetchPhases(selectedProjectData);
         } else {
             setProjectData({
                 name: '',
@@ -68,16 +40,7 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
                 currentPhaseId: '',
                 prazo_inicial: dayjs(),
                 prazo_final: dayjs(),
-                phases: {
-                    'Projeto Informacional': false,
-                    'Projeto Conceitual': false,
-                    'Projeto Preliminar': false,
-                    'Projeto Detalhado': false,
-                },
             });
-
-            // Limpe as fases quando não houver projeto selecionado
-            setProjectPhases([]);
         }
     }, [selectedProject, projects]);
 
@@ -104,16 +67,6 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
         setSelectedProject(selectedProjectId);
     };
 
-    const handlePhaseChange = (phase, isChecked) => {
-        setProjectData((prevData) => ({
-            ...prevData,
-            phases: {
-                ...prevData.phases,
-                [phase]: isChecked,
-            },
-        }));
-    };
-
 
     const handleSave = async () => {
         try {
@@ -127,7 +80,6 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
                     name: projectData.name,
                     description: projectData.description,
                     currentPhaseId: projectData.currentPhaseId,
-                    phasesToAdd: Object.keys(projectData.phases).filter(phase => projectData.phases[phase]),
                     prazo_inicial: projectData.prazo_inicial,
                     prazo_final: projectData.prazo_final,
                 }),
@@ -192,24 +144,6 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
                     onChange={(e) => handleFieldChange('description', e.target.value)}
                     variant="standard"
                 />
-                <div>
-                    <div>
-                        <b>Fases Associadas:</b>
-                    </div>
-                    {projectData.phases && Object.keys(projectData.phases).map((phase) => (<FormControlLabel
-                        key={phase}
-                        control={
-                            <Checkbox
-                                checked={projectData.phases[phase]}
-                                onChange={(e) =>
-                                    handlePhaseChange(phase, e.target.checked)
-                                }
-                            />
-                        }
-                        label={phase}
-                    />
-                    ))}
-                </div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DatePicker', 'DatePicker']}>
                         <DatePicker
