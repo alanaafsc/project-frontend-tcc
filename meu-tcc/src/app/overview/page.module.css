@@ -4,6 +4,7 @@
     /* 100% da altura da viewport */
     flex-direction: row;
     overflow-y: auto; 
+    
 }
 
 .table {
@@ -24,4 +25,9 @@
     gap: 20px;
     margin-bottom: 25px;
     overflow-y: auto; 
+}
+
+.title {
+    gap: 15px;
+    margin-bottom: 10px;
 }

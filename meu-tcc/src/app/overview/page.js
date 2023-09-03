@@ -7,7 +7,7 @@ import '@fontsource/roboto/700.css';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Card, CardActionArea, CardActions } from '@mui/material';
+import { Card, CardActionArea, CardActions, Stack, Typography, Avatar, Divider } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Fab from '@mui/material/Fab';
 import { useState, useEffect } from 'react';
@@ -18,6 +18,7 @@ import FormDialogAddProject from './addProject';
 import DeleteProjectDialog from './deleteProjectDialog';
 import EditProjectDialog from './editProject';
 import styles from './page.module.css';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function PageOverview() {
 
@@ -40,7 +41,7 @@ export default function PageOverview() {
                 console.error('Error fetching projects:', error);
             });
     }, []);
-        
+
 
     const handleAddButtonClick = () => {
         setIsAddDialogOpen(true);
@@ -74,7 +75,7 @@ export default function PageOverview() {
     const handleProjectAdd = (newProject) => {
         // Aqui você pode atualizar a lista de projetos com o novo projeto
         console.log('Novo projeto criado:', newProject);
-            // Atualize a lista de projetos com o novo projeto
+        // Atualize a lista de projetos com o novo projeto
         setProjects((prevProjects) => [...prevProjects, newProject]);
 
         // Feche o diálogo de adição de projeto
@@ -90,6 +91,21 @@ export default function PageOverview() {
             <div className={styles.container}>
                 <MenuLateral />
                 <div className={styles.table}>
+                    <div className={styles.title}>
+                        <Stack direction="row" justifyContent="space-between" alignItems="end" sx={{ marginBottom: '10px', marginTop: '13px', 
+                        marginLeft: '10px', marginRight: '10px' }}>
+                            <Typography variant="h1" gutterBottom style={{
+                                fontSize: '20px', fontWeight: '900', color: 'grey',
+                                paddingTop: '10px'
+                            }}>
+                                Projetos
+                            </Typography>
+                            <Avatar>
+                                <PersonIcon />
+                            </Avatar>
+                        </Stack>
+                        <Divider />
+                    </div >
                     <Card>
                         <CardContent>
                             <Table></Table>
