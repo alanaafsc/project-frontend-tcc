@@ -16,48 +16,60 @@ import {
 } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight'; // Importe o ícone ArrowRight do Material-UI
 import { MoreVert } from '@mui/icons-material';
+import React, { useEffect, useState } from 'react';
 
-const ListTasks = (props) => {
-  const { products = [], sx } = props;
+
+const ListTasks = ({ projectId }) => {
+
+  const [projectData, setProjectData] = useState(null);
+  const [phaseName, setPhaseName] = useState(null);
+  const [activitiesData, setActivitiesData] = useState([]);
+
+  useEffect(() => {
+    if (projectId) {
+      // Realize uma solicitação para buscar os detalhes do projeto com base no projectId
+      fetch(`/api/projects/get/project?projectId=${projectId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.project.rows) {
+            setProjectData(data.project.rows[0]);
+            // Agora, vamos buscar o nome da fase com base no ID da fase atual
+            fetch(`/api/phase/get/phase?phaseId=${data.project.rows[0].current_phase_id}`)
+              .then((phaseResponse) => phaseResponse.json())
+              .then((phaseData) => {
+                setPhaseName(phaseData.phase.rows[0].name); 
+                console.log(phaseData.phase.rows[0].id)
+                fetch(`/api/activities/get/fase?phaseId=${phaseData.phase.rows[0].id}`)
+                  .then((activitiesResponse) => activitiesResponse.json())
+                  .then((activities) => {
+                    setActivitiesData(activities.activity.rows); 
+                  })
+                  .catch((error) => console.error('Erro ao buscar as atividades:', error));
+              })
+              .catch((phaseError) => console.error('Erro ao buscar a fase:', phaseError));
+          }
+        })
+        .catch((error) => console.error('Erro ao buscar o projeto:', error));
+    }
+  }, [projectId]);
 
   return (
-    <Card sx={sx}>
-      <CardHeader title="Latest Products" />
+    <Card>
+      <CardHeader title="Atividades da fase atual" />
       <List>
-        {products.map((product, index) => {
-          const hasDivider = index < products.length - 1;
-          const updatedAtDistance = new Date(product)
+        {activitiesData.map((activity, index) => {
+          const hasDivider = index < activitiesData.length - 1;
 
           return (
-            <ListItem divider={hasDivider} key={product.id}>
+            <ListItem divider={hasDivider} key={activity.id}>
               <ListItemAvatar>
-                {
-                  product.image ? (
-                    <Box
-                      component="img"
-                      src={product.image}
-                      sx={{
-                        borderRadius: 1,
-                        height: 48,
-                        width: 48,
-                      }}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        borderRadius: 1,
-                        backgroundColor: 'neutral.200',
-                        height: 48,
-                        width: 48,
-                      }}
-                    />
-                  )
-                }
+                {/* Você pode adicionar uma imagem da atividade aqui se tiver */}
+                {/* Por exemplo: <img src={activity.image} alt={activity.name} /> */}
               </ListItemAvatar>
               <ListItemText
-                primary={product.name}
+                primary={activity.name}
                 primaryTypographyProps={{ variant: 'subtitle1' }}
-                secondary={`Updated ${updatedAtDistance} ago`}
+                secondary={`Prazo: ${activity.prazo_inicial} - ${activity.prazo_final}`}
                 secondaryTypographyProps={{ variant: 'body2' }}
               />
               <IconButton edge="end">
@@ -83,16 +95,11 @@ const ListTasks = (props) => {
           size="small"
           variant="text"
         >
-          View all
+          Ver tudo
         </Button>
       </CardActions>
     </Card>
   );
-};
-
-ListTasks.propTypes = {
-  products: PropTypes.array,
-  sx: PropTypes.object,
 };
 
 export default ListTasks;

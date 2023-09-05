@@ -50,3 +50,16 @@
     flex-direction: row;
     gap: 20px;
 }
+
+.overviews {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    gap: 40px;
+}
+
+.listTasks{
+    display: flex;
+    background-color: black;
+    flex: 1;
+}

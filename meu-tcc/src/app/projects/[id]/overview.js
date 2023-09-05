@@ -1,13 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { Description } from '@mui/icons-material';
 
-const OverviewProject = (props) => {
-  const { difference, positive = false, sx, value } = props;
+const OverviewProject = ({ projectId }) => {
+  const [projectData, setProjectData] = useState(null);
+  const [phaseName, setPhaseName] = useState(null);
+
+  useEffect(() => {
+    if (projectId) {
+      // Realize uma solicitação para buscar os detalhes do projeto com base no projectId
+      fetch(`/api/projects/get/project?projectId=${projectId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.project.rows) {
+            setProjectData(data.project.rows[0]);
+            // Agora, vamos buscar o nome da fase com base no ID da fase atual
+            fetch(`/api/phase/get/phase?phaseId=${data.project.rows[0].current_phase_id}`)
+              .then((phaseResponse) => phaseResponse.json())
+              .then((phaseData) => {
+                setPhaseName(phaseData.phase.rows[0].name); // Definir o nome da fase no estado
+              })
+              .catch((phaseError) => console.error('Erro ao buscar a fase:', phaseError));
+          }
+        })
+        .catch((error) => console.error('Erro ao buscar o projeto:', error));
+    }
+  }, [projectId]);
+
+  // Verifique se os dados do projeto estão carregados ou ainda são nulos
+  if (!projectData || !phaseName) {
+    return <div>Carregando...</div>;
+  }
+
+  const { name, prazo_final } = projectData;
 
   return (
-    <Card sx={sx}>
+    <Card>
       <CardContent>
         <Stack
           alignItems="flex-start"
@@ -22,8 +51,14 @@ const OverviewProject = (props) => {
             >
               PROJETO
             </Typography>
-            <Typography variant="h4">
-              {value}
+            <Typography variant="h5">
+              {name}
+            </Typography>
+            <Typography variant="button">
+              Fase: {phaseName} {/* Exibir o nome da fase */}
+            </Typography>
+            <Typography variant="body2">
+              Prazo Final: {prazo_final}
             </Typography>
           </Stack>
           <Avatar
@@ -34,43 +69,10 @@ const OverviewProject = (props) => {
             }}
           >
             <SvgIcon>
-            <Description/>
+              <DescriptionIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
-        {difference && (
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            sx={{ mt: 3 }}
-          >
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={0.5}
-            >
-              <SvgIcon
-                color={positive ? 'success' : 'error'}
-                fontSize="small"
-              >
-                {/* Insira aqui o conteúdo do seu ícone */}
-              </SvgIcon>
-              <Typography
-                color={positive ? 'success.main' : 'error.main'}
-                variant="body2"
-              >
-                {difference}%
-              </Typography>
-            </Stack>
-            <Typography
-              color="text.secondary"
-              variant="caption"
-            >
-              Since last month
-            </Typography>
-          </Stack>
-        )}
       </CardContent>
     </Card>
   );
