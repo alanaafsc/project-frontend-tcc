@@ -4,7 +4,8 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Card } from '@mui/material';
+import { Card, Stack, Typography, Avatar, Divider} from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
 import CardContent from '@mui/material/CardContent';
 import MenuLateral from '../menu';
 import PageLayout from '../pageLayout';
@@ -20,6 +21,23 @@ export default function Activities() {
             <div className={styles.appContainer}>
                 <MenuLateral />
                 <div className={styles.contentContainer}>
+                    <div className={styles.title}>
+                        <Stack direction="row" justifyContent="space-between" alignItems="end" sx={{
+                            marginBottom: '10px', marginTop: '13px',
+                            marginLeft: '10px', marginRight: '10px'
+                        }}>
+                            <Typography variant="h1" gutterBottom style={{
+                                fontSize: '20px', fontWeight: '900', color: 'grey',
+                                paddingTop: '10px'
+                            }}>
+                                Atividades
+                            </Typography>
+                            <Avatar>
+                                <PersonIcon />
+                            </Avatar>
+                        </Stack>
+                        <Divider />
+                    </div >
                     <Card className={styles.card}>
                         <CardContent>
                             <div className={styles.flexboxUpper}>

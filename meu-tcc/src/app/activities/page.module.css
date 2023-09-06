@@ -39,3 +39,8 @@
     height: fit-content;
     /* Adicione isso para ajustar automaticamente a altura ao conteúdo */
 }
+
+.title {
+    gap: 15px;
+    margin-bottom: 10px;
+}

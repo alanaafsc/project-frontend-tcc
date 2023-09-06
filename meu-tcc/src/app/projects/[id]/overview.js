@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import { Description } from '@mui/icons-material';
+import dayjs from 'dayjs';
 
 const OverviewProject = ({ projectId }) => {
   const [projectData, setProjectData] = useState(null);
@@ -28,11 +29,10 @@ const OverviewProject = ({ projectId }) => {
     }
   }, [projectId]);
 
-  // Verifique se os dados do projeto estão carregados ou ainda são nulos
+ //  Verifique se os dados do projeto estão carregados ou ainda são nulos
   if (!projectData || !phaseName) {
     return <div>Carregando...</div>;
   }
-
   const { name, prazo_final } = projectData;
 
   return (
@@ -58,7 +58,7 @@ const OverviewProject = ({ projectId }) => {
               Fase: {phaseName} {/* Exibir o nome da fase */}
             </Typography>
             <Typography variant="body2">
-              Prazo Final: {prazo_final}
+            Prazo Final: {dayjs(prazo_final).format('DD/MM/YY')}
             </Typography>
           </Stack>
           <Avatar

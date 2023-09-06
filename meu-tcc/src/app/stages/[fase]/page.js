@@ -15,14 +15,19 @@ import CardContent from '@mui/material/CardContent';
 import Fab from '@mui/material/Fab';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import EditDialogFases from './editDialogFases';
 import styles from './page.module.css';
 import TableLayout from './tableFases';
-import AddDialogFases from './addDialogFases';
-import DeleteDialogFases from './deleteDialogFases';
+import AddDialogAtividades from './addDialogAtividade';
+import DeleteDialogFases from './deleteDialogActivity';
+import DeleteActivityDialog from './deleteDialogActivity';
+import { useRouter } from 'next/navigation';
+import EditDialogAtividades from './editDialogAtividades';
 
 
-export default function Stages() {
+export default function Stages({ params }) {
+    const fase = params.fase;
+    console.log(fase)
+
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -67,7 +72,7 @@ export default function Stages() {
                                 </Typography>
                             </div>
                             <Divider />
-                            <TableLayout />
+                            <TableLayout phaseId={fase} />
                         </CardContent>
 
                         <CardActionArea>
@@ -86,13 +91,13 @@ export default function Stages() {
                                 </Fab>
                             </CardActions>
                         </CardActionArea>
-                        <EditDialogFases open={isEditDialogOpen} onClose={handleEditDialogClose} />
-                        <AddDialogFases open={isAddDialogOpen} onClose={handleAddDialogClose} />
-                        <DeleteDialogFases
+                        <EditDialogAtividades open={isEditDialogOpen} onClose={handleEditDialogClose} />
+                        <AddDialogAtividades open={isAddDialogOpen} onClose={handleAddDialogClose} />
+                        {/* <DeleteActivityDialog
                             open={isDeleteDialogOpen}
                             onClose={handleDeleteDialogClose}
                             activities={activities}
-                        />
+                        /> */}
                     </Card>
                 </div>
             </div>

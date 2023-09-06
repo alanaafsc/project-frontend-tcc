@@ -1,12 +1,24 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function deletePhase(req, res) {
-  if (req.method !== 'DELETE') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function DELETE(request) {
+  const requestBody = await request.text();
+  const { id } = JSON.parse(requestBody);
 
   try {
-    const { id } = req.body;
+
+    await sql`
+    UPDATE projects
+    SET current_phase_id = NULL
+    WHERE current_phase_id = ${id};
+  `;
+
+    // Limpe as referências das atividades associadas à fase
+    await sql`
+        UPDATE Activities
+        SET phase_id = NULL
+        WHERE phase_id = ${id};
+      `;
 
     // Exclua a fase
     const phaseResult = await sql`
@@ -15,16 +27,10 @@ export default async function deletePhase(req, res) {
       RETURNING *;
     `;
 
-    // Limpe as referências das atividades associadas à fase
-    await sql`
-      UPDATE Activities
-      SET phase_id = NULL
-      WHERE phase_id = ${id};
-    `;
+    return NextResponse.json({ phaseResult }, { status: 201 });
 
-    res.status(200).json(phaseResult[0]);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error deleting phase' });
+    return NextResponse.json({ error: 'Error deleting phase' }, { status: 500 });
   }
 }

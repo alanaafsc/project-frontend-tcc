@@ -18,10 +18,13 @@ import TableAtividade from './tableAtividade';
 import TableLayout from './tableFases';
 import OverviewProject from './overview';
 import ListTasks from './listTasks';
+import FormDialogAddFase from './addFase';
+import React, { useEffect, useState } from 'react';
 
 export default function Projects({ params }) {
     const router = useRouter();
     const id = params.id;
+    const [isDialogOpen, setDialogOpen] = useState(false);
 
     return (
         <>
@@ -55,7 +58,7 @@ export default function Projects({ params }) {
                         <div >
                             <ListTasks
                                 projectId={id}
-                                sx={{ width: '500px'}}
+                                sx={{ width: '500px' }}
                             />
                         </div>
                     </div>
@@ -63,7 +66,7 @@ export default function Projects({ params }) {
                         <CardContent>
                             <div className={styles.boxFullWidth}>
                                 <div>
-                                    <TableLayout />
+                                    <TableLayout projectId={id} />
                                 </div>
                             </div>
                         </CardContent>
@@ -72,6 +75,7 @@ export default function Projects({ params }) {
                                 color="primary"
                                 size="medium"
                                 aria-label="add"
+                                onClick={() => setDialogOpen(true)}
                                 style={{ position: 'absolute', right: 24, bottom: 50 }} // Ajuste o posicionamento conforme necessário
                             >
                                 <Add />
@@ -80,6 +84,16 @@ export default function Projects({ params }) {
                     </Card>
                 </div>
             </div>
+            <FormDialogAddFase
+                open={isDialogOpen}
+                onClose={() => setDialogOpen(false)}
+                onAdd={(newPhase) => {
+                    // Aqui você pode adicionar a lógica para atualizar a lista de fases ou realizar outras ações após a adição da fase
+                    console.log('Nova fase adicionada:', newPhase);
+                }}
+                projectId={id}
+
+            />
         </>
     );
 }

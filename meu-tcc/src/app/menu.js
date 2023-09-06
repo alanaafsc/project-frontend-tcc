@@ -28,8 +28,6 @@ function getItem(label, key, icon, children, type) {
 const items = [
     getItem('Overview', '1', <DesktopOutlined />),
     getItem('Projetos', 'sub2', <SnippetsOutlined />, [
-        getItem('Projetos', '2'),
-        getItem('Fases', '3'),
         getItem('Atividades', '4'),
     ]),
     getItem('Cronograma', '5', <AppstoreOutlined />),
@@ -57,10 +55,6 @@ export default function MenuLateral() {
     const handleRouteClick = (key) => {
         if (key === '1') {
             router.push('/overview');
-        } else if (key === '2') {
-            router.push('/projects/1');
-        } else if (key === '3') {
-            router.push('/stages/1');
         } else if (key === '4') {
             router.push('/activities');
         } else if (key === '5') {

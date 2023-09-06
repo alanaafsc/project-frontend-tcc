@@ -1,34 +1,23 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function addPhase(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function POST(request) {
+  const requestBody = await request.text(); // Lê o corpo da solicitação como texto
+  const { name, description, project_id, prazo_inicial, prazo_final } = JSON.parse(requestBody);
 
   try {
-    const { name, description, projectId, activities } = req.body;
 
     // Adicione a fase
     const phaseResult = await sql`
-      INSERT INTO Phases (name, description, project_id)
-      VALUES (${name}, ${description}, ${projectId})
+      INSERT INTO Phases (name, description, project_id, prazo_inicial, prazo_final)
+      VALUES (${name}, ${description}, ${project_id}, ${prazo_inicial}, ${prazo_final})
       RETURNING *;
     `;
 
-    const phaseId = phaseResult[0].id;
-
-    // Atualize as atividades relacionadas à fase
-    if (activities && activities.length > 0) {
-      await sql`
-        UPDATE Activities
-        SET phase_id = ${phaseId}
-        WHERE id IN (${activities});
-      `;
-    }
-
-    res.status(201).json(phaseResult[0]);
+    return NextResponse.json({ phaseResult }, { status: 201 });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error adding phase' });
+    return NextResponse.json({ error: 'Error adding phase' }, { status: 500 });
+
   }
 }
