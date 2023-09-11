@@ -10,87 +10,45 @@ import { Badge, Calendar } from 'antd';
 import MenuLateral from '../menu';
 import PageLayout from '../pageLayout';
 import styles from './page.module.css';
+import { useEffect, useState } from 'react';
 
-const getListData = (value) => {
-    let listData;
-    switch (value.date()) {
-        case 8:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event.',
-                },
-                {
-                    type: 'success',
-                    content: 'This is usual event.',
-                },
-            ];
-            break;
-        case 10:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event.',
-                },
-                {
-                    type: 'success',
-                    content: 'This is usual event.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event.',
-                },
-            ];
-            break;
-        case 15:
-            listData = [
-                {
-                    type: 'warning',
-                    content: 'This is warning event',
-                },
-                {
-                    type: 'success',
-                    content: 'This is very long usual event......',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 1.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 2.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 3.',
-                },
-                {
-                    type: 'error',
-                    content: 'This is error event 4.',
-                },
-            ];
-            break;
-        default:
-    }
-    return listData || [];
-};
-const getMonthData = (value) => {
-    if (value.month() === 8) {
-        return 1394;
-    }
-};
+const Cronograma = () => {
+    const [projectData, setProjectData] = useState([]);
 
-export default function Cronograma() {
+    useEffect(() => {
+        // Realize a solicitação à API para buscar os dados do banco de dados
+        fetch('/api/projects/get')
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.projects && data.projects.rows) {
+                    setProjectData(data.projects.rows);
+                }
+            })
+            .catch((error) => console.error('Erro ao buscar dados dos projetos:', error));
+    }, []);
 
-    const monthCellRender = (value) => {
-        const num = getMonthData(value);
-        return num ? (
-            <div className="notes-month">
-                <section>{num}</section>
-                <span>Backlog number</span>
-            </div>
-        ) : null;
+    const getListData = (value) => {
+        // Converter a data 'value' do calendário para um formato de string correspondente
+        const formattedValueDate = `${value.year()}-${(value.month() + 1).toString().padStart(2, '0')}-${value.date().toString().padStart(2, '0')}`;
+
+        // Aqui você pode mapear os dados do projeto para criar eventos com base no prazo inicial e final
+        const listData = projectData
+            .filter((project) => {
+                // Converter as datas do banco de dados para strings no mesmo formato
+                const startDate = project.prazo_inicial.split('T')[0];
+                const endDate = project.prazo_final.split('T')[0];
+
+                // Realizar a comparação entre datas
+                return startDate <= formattedValueDate && formattedValueDate <= endDate;
+            })
+            .map((project) => ({
+                type: 'success',
+                content: project.name,
+            }));
+
+        return listData || [];
     };
+
     const dateCellRender = (value) => {
         const listData = getListData(value);
         return (
@@ -103,16 +61,16 @@ export default function Cronograma() {
             </ul>
         );
     };
+
     const cellRender = (current, info) => {
         if (info.type === 'date') return dateCellRender(current);
-        if (info.type === 'month') return monthCellRender(current);
         return info.originNode;
     };
 
     return (
         <>
             <PageLayout> </PageLayout>
-            <div className={styles.container} >
+            <div className={styles.container}>
                 <MenuLateral />
                 <div className={styles.box}>
                     <Card style={{ overflowY: 'auto' }}>
@@ -125,3 +83,5 @@ export default function Cronograma() {
         </>
     );
 };
+
+export default Cronograma;

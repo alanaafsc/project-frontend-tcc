@@ -1,13 +1,11 @@
 import { sql } from '@vercel/postgres';
+import { NextResponse } from 'next/server';
 
-export default async function deleteActivity(req, res) {
-  if (req.method !== 'DELETE') {
-    return res.status(405).end(); // Método não permitido
-  }
+export async function DELETE(request) {
+  const requestBody = await request.text();
+  const { id } = JSON.parse(requestBody);
 
   try {
-    const { id } = req.body;
-
     // Exclua a atividade
     const activityResult = await sql`
       DELETE FROM Activities
@@ -15,9 +13,9 @@ export default async function deleteActivity(req, res) {
       RETURNING *;
     `;
 
-    res.status(200).json(activityResult[0]);
+    return NextResponse.json({ activityResult }, { status: 201 });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error deleting activity' });
+    return NextResponse.json({ error: 'Error deleting activity' }, { status: 500 });
   }
 }

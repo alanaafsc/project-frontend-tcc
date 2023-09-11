@@ -45,7 +45,7 @@ export default function Activities() {
                             </div>
                         </CardContent>
                     </Card>
-                    <div className={styles.flexboxRow}>
+                    {/* <div className={styles.flexboxRow}>
                         <Card className={styles.card}>
                             <CardContent>
                                 <div className={styles.box}>
@@ -60,7 +60,7 @@ export default function Activities() {
                                 </div>
                             </CardContent>
                         </Card>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>

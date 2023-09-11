@@ -10,7 +10,6 @@ import { useEffect } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import dayjs from 'dayjs';
 
 const TableLayout = ({ phaseId }) => {
@@ -43,7 +42,6 @@ const TableLayout = ({ phaseId }) => {
             title: 'Atividades',
             dataIndex: 'name',
             key: 'name',
-            render: (text) => <a>{text}</a>,
         },
         {
             title: 'Descrição',

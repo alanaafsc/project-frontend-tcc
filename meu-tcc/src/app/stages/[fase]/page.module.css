@@ -1,6 +1,6 @@
 .container {
     display: flex;
-    height: 100vh;
+    /* height: 100vh; */
     /* 100% da altura da viewport */
     flex-direction: row;
 }
@@ -10,8 +10,8 @@
     flex: 1;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: stretch;
-    height: 100vh;
+    /* align-items: stretch;
+    height: 100vh; */
     padding: 20px;
     gap: 15px;
 }

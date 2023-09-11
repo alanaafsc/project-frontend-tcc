@@ -51,16 +51,13 @@ export default function Projects({ params }) {
                             <OverviewProject
                                 projectId={id}
                             />
-                            <OverviewProject
-                                projectId={id}
-                            />
                         </div >
-                        <div >
+                        {/* <div >
                             <ListTasks
                                 projectId={id}
                                 sx={{ width: '500px' }}
                             />
-                        </div>
+                        </div> */}
                     </div>
                     <Card className={styles.cardContainer}>
                         <CardContent>
@@ -92,8 +89,8 @@ export default function Projects({ params }) {
                     console.log('Nova fase adicionada:', newPhase);
                 }}
                 projectId={id}
-
             />
+
         </>
     );
 }

@@ -3,8 +3,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { Tag } from 'antd';
 import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const AddDialogAtividades = ({ open, onClose, onAdd }) => {
+const AddDialogAtividades = ({ open, onClose }) => {
     const [projects, setProjects] = useState([]);
     const [selectedProject, setSelectedProject] = useState('');
     const [phases, setPhases] = useState([]);
@@ -14,6 +18,8 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
         descricao: '',
         status: '',
         fasePDP: '',
+        prazo_inicial: dayjs(),
+        prazo_final: dayjs(),
     });
 
     useEffect(() => {
@@ -57,44 +63,50 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
         handleFetchActivities(selectedProject);
     }, [selectedProject]);
 
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
+    const handleInputChange = (field, value) => {
+        let newValue = value;
+
+        // Verifique se o campo é uma data e converta para dayjs, se necessário
+        if (field === 'prazo_inicial' || field === 'prazo_final') {
+            newValue = dayjs(value);
+        }
+
         setActivityData((prevData) => ({
             ...prevData,
-            [name]: value,
+            [field]: newValue,
         }));
+
     };
 
     const handleAddActivity = async () => {
         try {
-          const response = await fetch('/api/activities/add', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              name: activityData.atividade,
-              description: activityData.descricao,
-              status: activityData.status,
-              projectId: selectedProject,
-              phaseId: selectedPhase, // Certifique-se de que a chave seja 'phaseId' para corresponder à rota existente.
-            }),
-          });
-      
-          if (response.ok) {
-            const data = await response.json();
-            // Você pode lidar com a resposta da API aqui, se desejar
-            // Por exemplo, atualizar o estado da lista de atividades.
-            onAdd(data.activityResult); // Chama a função `onAdd` passando os dados da atividade.
-            onClose();
-          } else {
-            // Lidar com erros da API, se houver algum
-            console.error('Error adding activity:', response.statusText);
-          }
+            const response = await fetch('/api/activities/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: activityData.atividade,
+                    description: activityData.descricao,
+                    status: activityData.status,
+                    projectId: selectedProject,
+                    phaseId: selectedPhase,
+                    prazo_inicial: activityData.prazo_inicial,
+                    prazo_final: activityData.prazo_final,
+                }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                onClose();
+                window.location.reload();
+            } else {
+                console.error('Error adding activity:', response.statusText);
+            }
         } catch (error) {
-          console.error('Error adding activity:', error);
+            console.error('Error adding activity:', error);
         }
-      };
+    };
 
     return (
         <Dialog open={open} onClose={onClose}>
@@ -134,7 +146,7 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
                     label="Atividade"
                     fullWidth
                     value={activityData.atividade}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange('atividade', e.target.value)}
                 />
                 <TextField
                     margin="dense"
@@ -142,14 +154,15 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
                     label="Descrição"
                     fullWidth
                     value={activityData.descricao}
-                    onChange={handleInputChange}
+                    onChange={(e) => handleInputChange('descricao', e.target.value)}
                 />
                 <FormControl fullWidth margin="dense">
                     <InputLabel>Status</InputLabel>
                     <Select
                         name="status"
                         value={activityData.status}
-                        onChange={handleInputChange}
+                        onChange={(e) => handleInputChange('status', e.target.value)}
+                        sx={{ marginBottom: '10px' }}
                     >
                         <MenuItem value="Em andamento">
                             <Tag color="yellow">Em andamento</Tag>
@@ -162,6 +175,22 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
                         </MenuItem>
                     </Select>
                 </FormControl>
+                {/* DatePicker para Prazo Inicial */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        label="Prazo inicial"
+                        value={dayjs(activityData.prazo_inicial)}
+                        onChange={(date) => handleInputChange('prazo_inicial', date)}
+                        sx={{ marginRight: '15px' }}
+                    />
+                </LocalizationProvider>
+                {/* DatePicker para Prazo Final */}
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        label="Prazo final"
+                        value={dayjs(activityData.prazo_final)}
+                        onChange={(date) => handleInputChange('prazo_final', date)}                    />
+                </LocalizationProvider>
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose}>Cancelar</Button>

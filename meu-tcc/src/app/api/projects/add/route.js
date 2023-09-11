@@ -22,21 +22,24 @@ export async function POST(request) {
       const phaseIds = [];
 
       for (const phaseName of phasesToAdd) {
-          const idPhase = await sql`
+        const idPhase = await sql`
               INSERT INTO Phases (name, project_id)
               VALUES (${phaseName}, ${projectId})
               RETURNING id;
           `;
-          // Adicione o ID retornado ao array phaseIds
-          phaseIds.push(idPhase.rows[0].id);
+        // Adicione o ID retornado ao array phaseIds
+        phaseIds.push(idPhase.rows[0].id);
       }
-      console.log(phaseIds[0])
-      const updatedProject = await sql`
-      UPDATE projects
-      SET current_phase_id = ${phaseIds[0]}
-      WHERE id = ${projectId}
-      RETURNING *;
-    `;
+
+      // Se currentPhaseId for null ou não definido, defina-o como o ID da primeira fase em phasesToAdd
+      if (parsedCurrentPhaseId === null && phaseIds.length > 0) {
+        const newCurrentPhaseId = phaseIds[0];
+        await sql`
+          UPDATE projects
+          SET current_phase_id = ${newCurrentPhaseId}
+          WHERE id = ${projectId};
+        `;
+      }
 
       // Retorne o novo projeto criado
       return NextResponse.json({ newProject }, { status: 201 });

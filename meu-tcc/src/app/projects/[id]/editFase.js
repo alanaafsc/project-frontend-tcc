@@ -18,6 +18,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 
 const EditDialog = ({ open, onClose, projectId, selectedPhaseId }) => {
+    console.log('projectId', projectId)
     const [phaseData, setPhaseData] = useState({
         name: '',
         description: '',
@@ -68,7 +69,7 @@ const EditDialog = ({ open, onClose, projectId, selectedPhaseId }) => {
                     id: selectedPhaseId,
                     name: phaseData.name,
                     description: phaseData.description,
-                    projectId: projectId,
+                    project_id: projectId,
                     prazo_inicial: phaseData.prazo_inicial.toISOString(),
                     prazo_final: phaseData.prazo_final.toISOString(),
                 }),

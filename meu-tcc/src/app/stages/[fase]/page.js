@@ -14,19 +14,32 @@ import { Card, CardActionArea, CardActions, Divider } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Fab from '@mui/material/Fab';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './page.module.css';
 import TableLayout from './tableFases';
 import AddDialogAtividades from './addDialogAtividade';
 import DeleteDialogFases from './deleteDialogActivity';
 import DeleteActivityDialog from './deleteDialogActivity';
 import { useRouter } from 'next/navigation';
-import EditDialogAtividades from './editDialogAtividades';
-
+import Link from 'next/link';
+import EditDialogAtividades from './editDialogAtividade';
+import { Faster_One } from 'next/font/google';
 
 export default function Stages({ params }) {
     const fase = params.fase;
-    console.log(fase)
+    const [faseAtual, setFaseAtual] = useState([]);
+
+
+    useEffect(() => {
+        if (fase) {
+            fetch(`/api/phase/get/phase?phaseId=${fase}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    setFaseAtual(data.phase.rows[0]);
+                })
+                .catch((error) => console.error('Erro ao buscar a fase:', error));
+        }
+    }, [fase]);
 
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -68,7 +81,9 @@ export default function Stages({ params }) {
                         <CardContent>
                             <div className={styles.boxFullWidth} style={{ width: '100%' }}>
                                 <Typography gutterBottom variant="h5" component="div">
-                                    Fase atual
+                                    <Link href={`/projects/${faseAtual.project_id}`} passHref>
+                                        {faseAtual.name}
+                                    </Link>
                                 </Typography>
                             </div>
                             <Divider />
@@ -91,13 +106,13 @@ export default function Stages({ params }) {
                                 </Fab>
                             </CardActions>
                         </CardActionArea>
-                        <EditDialogAtividades open={isEditDialogOpen} onClose={handleEditDialogClose} />
+                        <EditDialogAtividades open={isEditDialogOpen} onClose={handleEditDialogClose} phaseId={fase}/>
                         <AddDialogAtividades open={isAddDialogOpen} onClose={handleAddDialogClose} />
-                        {/* <DeleteActivityDialog
+                        {<DeleteActivityDialog
                             open={isDeleteDialogOpen}
                             onClose={handleDeleteDialogClose}
-                            activities={activities}
-                        /> */}
+                            phaseId={fase}
+                        />}
                     </Card>
                 </div>
             </div>

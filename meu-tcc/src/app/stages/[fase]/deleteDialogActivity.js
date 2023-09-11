@@ -8,13 +8,25 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select'; 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function DeleteActivityDialog({ open, onClose, projects, onDelete }) {
-    const [selectedProjectId, setSelectedProjectId] = useState(null);
+export default function DeleteActivityDialog({ open, onClose, phaseId }) {
+    const [selectedActivityId, setSelectedActivityId] = useState(null);
+    const [activities, setActivities] = useState([]);
 
-    const handleProjectChange = (event) => {
-        setSelectedProjectId(event.target.value);
+    useEffect(() => {
+        if (phaseId) {
+            fetch(`/api/activities/get/fase?phaseId=${phaseId}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    setActivities(data.activity.rows);
+                })
+                .catch((error) => console.error('Erro ao buscar as atividades:', error));
+        }
+    }, [phaseId]);
+
+    const handleActivityChange = (event) => {
+        setSelectedActivityId(event.target.value);
     };
 
     const handleClose = () => {
@@ -23,46 +35,45 @@ export default function DeleteActivityDialog({ open, onClose, projects, onDelete
 
     const handleDelete = async () => {
         try {
-            const response = await fetch('/api/projects/delete', {
+            const response = await fetch('/api/activities/delete', {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    id: selectedProjectId,
+                    id: selectedActivityId,
                 }),
             });
     
             if (response.ok) {
-                onDelete(selectedProjectId); // Remova o projeto excluído da lista local
                 handleClose();
                 window.location.reload(); // Recarregue a página para refletir as atualizações
             } else {
                 // Trate o erro aqui, se necessário
             }
         } catch (error) {
-            console.error('Error deleting project:', error);
+            console.error('Error deleting activity:', error);
         }
     };
 
     return (
         <div>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Excluir Projeto</DialogTitle>
+                <DialogTitle>Excluir atividade</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Escolha o projeto que deseja excluir.
+                        Escolha a atividade que deseja excluir.
                     </DialogContentText>
                     <Select // Use o componente Select em vez do MenuItem
-                        value={selectedProjectId}
-                        onChange={handleProjectChange}
+                        value={selectedActivityId}
+                        onChange={handleActivityChange}
                         fullWidth
                         variant="standard"
                     >
-                        <MenuItem value={null}>Selecionar Projeto</MenuItem>
-                        {projects.map((project) => (
-                            <MenuItem key={project.id} value={project.id}>
-                                {project.name}
+                        <MenuItem value={null}>Selecionar Atividade</MenuItem>
+                        {activities.map((activity) => (
+                            <MenuItem key={activity.id} value={activity.id}>
+                                {activity.name}
                             </MenuItem>
                         ))}
                     </Select>

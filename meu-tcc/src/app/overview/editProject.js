@@ -22,7 +22,7 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
         name: '',
         description: '',
         currentPhaseId: '',
-        prazo_inicial: dayjs(), // Use dayjs para a data inicial
+        prazo_inicial: dayjs(), 
         prazo_final: dayjs(),
     });
 

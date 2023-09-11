@@ -15,7 +15,7 @@ import EditDialog from './editFase';
 const TableLayout = ({ projectId }) => {
   const [fases, setFases] = useState([]);
   const [selectedPhaseId, setSelectedPhaseId] = useState(null); // Estado para controlar o id da fase selecionada
-  const [isEditDialogVisible, setEditDialogVisible] = useState(false); // Estado para controlar a visibilidade do diálogo de edição
+  const [isEditDialogVisible, setEditDialogVisible] = useState(false);
 
   useEffect(() => {
     // Realize uma solicitação para buscar as fases com base no projectId
@@ -52,13 +52,14 @@ const TableLayout = ({ projectId }) => {
       console.error('Error deleting phase:', error);
     }
   };
+
   const handleEdit = (idPhase) => {
     setSelectedPhaseId(idPhase);
-    setEditDialogVisible(true); // Mostrar o diálogo de edição
+    setEditDialogVisible(true);
   };
 
   const handleCloseEditDialog = () => {
-    setEditDialogVisible(false); // Fechar o diálogo de edição
+    setEditDialogVisible(false);
   };
 
   const columns = [
@@ -123,9 +124,9 @@ const TableLayout = ({ projectId }) => {
       {isEditDialogVisible && (
         <EditDialog
           open={isEditDialogVisible}
-          onClose={handleCloseEditDialog}
-          projectId={projectId}
           selectedPhaseId={selectedPhaseId}
+          onClose={() => setEditDialogVisible(false)}
+          projectId={projectId}
         />
       )}
     </>

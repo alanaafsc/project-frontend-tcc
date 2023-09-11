@@ -7,6 +7,7 @@ import '@fontsource/roboto/700.css';
 import { Table, Tag } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import dayjs from 'dayjs';
 
 const columns = [
     {
@@ -32,12 +33,14 @@ const columns = [
     {
         title: 'Data inicial',
         dataIndex: 'datainicial',
-        key: 'datafinal',
+        key: 'datainicial',
+        render: (datainicial) => dayjs(datainicial).format('DD/MM/YY')
     },
     {
         title: 'Data final',
         dataIndex: 'datafinal',
         key: 'datafinal',
+        render: (datafinal) => dayjs(datafinal).format('DD/MM/YY')
     },
     {
         title: 'Status',
@@ -60,59 +63,25 @@ const columns = [
     },
 ];
 
-// const data = [
-//     {
-//         key: '1',
-//         projetos: 'Projeto 1',
-//         descricao: 'Projeto de desenvolvimento  de software',
-//         faseatual: 'Projeto Informacional',
-//         datafinal: '23/08/2023',
-//         status: 'Em andamento',
-//     },
-//     {
-//         key: '2',
-//         projetos: 'Projeto 1',
-//         descricao: 'Projeto de desenvolvimento  de software Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	 Projeto de desenvolvimento de software	',
-//         faseatual: 'Projeto Informacional',
-//         datafinal: '23/08/2023',
-//         status: 'Concluído',
-//     },
-//     {
-//         key: '3',
-//         projetos: 'Projeto 1',
-//         descricao: 'Projeto de desenvolvimento  de software',
-//         faseatual: 'Projeto Informacional',
-//         datafinal: '23/08/2023',
-//         status: 'Atrasado',
-//     },
-// ];
-
-const TableLayout = () => {
+const TableLayout = ( {projects} ) => {
     const [projectsData, setProjectsData] = useState([]); // Estado para armazenar dados dos projetos
 
-    useEffect(() => {
-        // Recupera a lista de projetos da API ao carregar a página
-        fetch('/api/projects/get')
-            .then(response => response.json())
-            .then(data => {
-                if (data.projects && data.projects.rows) {
-                    console.log(data.projects.rows)
-                    setProjectsData(data.projects.rows);
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching projects:', error);
-            });
-    }, []);
+    // useEffect(() => {
+    //     // Recupera a lista de projetos da API ao carregar a página
 
-    const data = projectsData.map(project => ({
+
+    //     setProjectsData(data);
+    //     console.log(projectsData)
+    // }, []);
+
+    const data = projects.map(project => ({
         key: project.id.toString(),
         projetos: project.name,
         descricao: project.description,
-        faseatual: project.current_phase_id, // Substitua pelo valor correto
+        faseatual: project.current_phase_name, // Substitua pelo valor correto
         datainicial: project.prazo_inicial, // Substitua pelo campo correto da data inicial no seu objeto
         datafinal: project.prazo_final,
-        status: 'Status', // Substitua pelo valor correto
+        status: 'Não iniciado', // Substitua pelo valor correto
     }));
 
     return <Table columns={columns} dataSource={data} />;

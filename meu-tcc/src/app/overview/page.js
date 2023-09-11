@@ -31,18 +31,27 @@ export default function PageOverview() {
         // Recupera a lista de projetos da API ao carregar a página
         fetch('/api/projects/get')
             .then(response => response.json())
-            .then(data => {
-                console.log('Data from API:', data.projects.rows);
+            .then(async (data) => {
                 if (data.projects && data.projects.rows) {
-                    setProjects(data.projects.rows);
+                    const updatedProjects = await Promise.all(data.projects.rows.map(async (project) => {
+                        if (project.current_phase_id !== null) {
+                            const phaseResponse = await fetch(`/api/phase/get/phase?phaseId=${project.current_phase_id}`);
+                            const phaseData = await phaseResponse.json();
+                            if (phaseData.phase) {
+                                project.current_phase_name = phaseData.phase.rows[0].name;
+                            }
+                        }
+                        return project;
+                    }));
+                    setProjects(updatedProjects);
+                    console.log(updatedProjects)
                 }
             })
             .catch(error => {
                 console.error('Error fetching projects:', error);
             });
     }, []);
-
-
+    
     const handleAddButtonClick = () => {
         setIsAddDialogOpen(true);
     };
@@ -108,7 +117,7 @@ export default function PageOverview() {
                     </div >
                     <Card>
                         <CardContent>
-                            <Table></Table>
+                            <Table projects={projects} ></Table>
                         </CardContent>
                         <CardActionArea>
                             <CardActions className={styles.buttons}>

@@ -54,7 +54,7 @@
 .overviews {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 1030px;
     gap: 40px;
 }
 

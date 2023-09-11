@@ -44,7 +44,7 @@ export default function Perfil() {
                                     <Input
                                         id="input-with-icon-adornment"
                                         sx={{ width: '932px' }}
-                                        defaultValue="Fulano"
+                                        defaultValue="Usuário"
                                         startAdornment={
                                             <InputAdornment position="start">
                                                 <AccountCircle />
