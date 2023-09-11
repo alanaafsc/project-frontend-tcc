@@ -1,10 +1,6 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
-
-// Criacao de todas as tabelas. Foi adicionado depois a referencia do id do projeto no Phases
-    // ALTER TABLE IF EXISTS Phases
-    // ADD COLUMN IF NOT EXISTS project_id int REFERENCES Projects(id);
 export async function GET(request) {
   try {
     // Criar a tabela de fases
@@ -13,6 +9,7 @@ export async function GET(request) {
         id serial PRIMARY KEY,
         name varchar(255),
         description text
+        project_id int REFERENCES Projects(id)
       );
     `;
 

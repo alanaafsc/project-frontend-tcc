@@ -32,10 +32,8 @@ export default function About() {
                             Impulsione seu processo de desenvolvimento de produto
                         </Typography>
                         <Typography variant="body1" gutterBottom color={"#717171"}>
-                            body1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos
-                            blanditiis tenetur unde suscipit, quam beatae rerum inventore consectetur,
-                            neque doloribus, cupiditate numquam dignissimos laborum fugiat deleniti? Eum
-                            quasi quidem quibusdam.
+                        A aplicação web MVP para gerenciamento de projetos com PDP foi concebida como uma solução que visa atender às necessidades iniciais das organizações, fornecendo as funcionalidades essenciais para o gerenciamento de projetos. Algumas das principais características 
+                        e funcionalidades incluem: Criação de Projetos, Adição de Fases e Atividades e Acompanhamento de Progresso.
                         </Typography>
                     </div>
                 </div>
