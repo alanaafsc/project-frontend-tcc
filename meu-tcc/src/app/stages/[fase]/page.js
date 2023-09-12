@@ -14,16 +14,13 @@ import { Card, CardActionArea, CardActions, Divider } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Fab from '@mui/material/Fab';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import AddDialogAtividades from './addDialogAtividade';
+import DeleteActivityDialog from './deleteDialogActivity';
+import EditDialogAtividades from './editDialogAtividade';
 import styles from './page.module.css';
 import TableLayout from './tableFases';
-import AddDialogAtividades from './addDialogAtividade';
-import DeleteDialogFases from './deleteDialogActivity';
-import DeleteActivityDialog from './deleteDialogActivity';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import EditDialogAtividades from './editDialogAtividade';
-import { Faster_One } from 'next/font/google';
 
 export default function Stages({ params }) {
     const fase = params.fase;

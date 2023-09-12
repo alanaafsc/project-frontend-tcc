@@ -49,11 +49,6 @@ const TableLayout = ({ phaseId }) => {
             key: 'description',
         },
         {
-            title: 'Fase do PDP',
-            dataIndex: 'phase_id',
-            key: 'phase_id',
-        },
-        {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
