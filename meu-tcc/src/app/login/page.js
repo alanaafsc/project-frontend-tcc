@@ -44,11 +44,7 @@ export default function Login() {
             const users = data.users.rows;
 
             const user = users.find(user => user.email === email);
-            console.log(users)
-            console.log(user)
-            console.log(email)
-            console.log(password)
-            console.log(user.password_hash)
+        
             if (user && bcrypt.compareSync(password, user.password_hash)) {
                 localStorage.setItem('userLoggedIn', 'true');
                 window.location.href = '/overview';
