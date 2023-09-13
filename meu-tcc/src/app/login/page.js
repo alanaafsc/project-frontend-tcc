@@ -27,8 +27,6 @@ import styles from './page.module.css';
 
 
 export default function Login() {
-    window.location.reload();
-
     const [showPassword, setShowPassword] = useState(false);
     const [userExists, setUserExists] = useState(true);
     const [email, setEmail] = useState('');

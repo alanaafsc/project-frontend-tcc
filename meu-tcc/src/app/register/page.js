@@ -123,7 +123,14 @@ export default function Register() {
                                 {registrationSuccess === true && (
                                     <Alert severity="success" style={{ marginTop: '10px' }}>
                                         Registro bem-sucedido! Você pode fazer{' '}
-                                        <Link href="/login" style={{ textDecoration: 'underline' }}>
+                                        <Link
+                                            href="/login"
+                                            style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                                            onClick={() => {
+                                                router.push('/login'); // Navegar para a página /login
+                                                window.location.reload(); // Recarregar a página após a navegação
+                                            }}
+                                        >
                                             login
                                         </Link>{' '}
                                         agora.
@@ -144,7 +151,10 @@ export default function Register() {
                                 <Button
                                     variant="outlined"
                                     style={{ width: '350px', marginTop: '10px' }}
-                                    onClick={() => router.push('/login')}
+                                    onClick={() => {
+                                        router.push('/login'); // Navegar para a página /login
+                                        window.location.reload(); // Recarregar a página após a navegação
+                                    }}
                                 >
                                     Login
                                 </Button>
