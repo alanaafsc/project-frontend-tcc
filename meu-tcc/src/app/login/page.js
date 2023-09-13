@@ -44,7 +44,10 @@ export default function Login() {
             const users = data.users.rows;
 
             const user = users.find(user => user.email === email);
-     
+            // console.log(user)
+            // console.log(email)
+            // console.log(password)
+            // console.log(user.password_hash)
             if (user && bcrypt.compareSync(password, user.password_hash)) {
                 localStorage.setItem('userLoggedIn', 'true');
                 window.location.href = '/overview';
@@ -55,13 +58,6 @@ export default function Login() {
             console.error('Error fetching user data:', error);
         }
     };
-
-    useEffect(() => {
-        const userLoggedIn = localStorage.getItem('userLoggedIn');
-        if (userLoggedIn) {
-            window.location.href = '/overview';
-        }
-    }, []);
 
     return (
         <>
