@@ -27,6 +27,8 @@ import styles from './page.module.css';
 
 
 export default function Login() {
+    window.location.reload();
+
     const [showPassword, setShowPassword] = useState(false);
     const [userExists, setUserExists] = useState(true);
     const [email, setEmail] = useState('');
@@ -39,7 +41,6 @@ export default function Login() {
         // Check if user exists (Replace this with your API call)
         // Assume the API endpoint is http://localhost:3000/api/user/get
         try {
-            window.location.reload();
             const response = await fetch('/api/user/get');
             const data = await response.json();
             const users = data.users.rows;
