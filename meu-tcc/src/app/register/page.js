@@ -59,7 +59,6 @@ export default function Register() {
             });
 
             if (response.ok) {
-                window.location.reload();
                 setRegistrationSuccess(true);
             } else {
                 setRegistrationSuccess(false);

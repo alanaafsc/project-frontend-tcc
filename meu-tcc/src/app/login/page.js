@@ -39,6 +39,7 @@ export default function Login() {
         // Check if user exists (Replace this with your API call)
         // Assume the API endpoint is http://localhost:3000/api/user/get
         try {
+            window.location.reload();
             const response = await fetch('/api/user/get');
             const data = await response.json();
             const users = data.users.rows;
