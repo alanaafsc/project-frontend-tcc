@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { sql } from '@vercel/postgres';
-import { NextResponse, revalidatePath } from 'next/server';
+import { NextResponse } from 'next/server';
  
 export async function POST(request) {
   const { name, email, password } = await request.json();
@@ -12,11 +12,13 @@ export async function POST(request) {
     const passwordHash = await bcrypt.hash(password, 10);
     
     // Inserir o usuário na tabela
-    await sql`INSERT INTO Users (name, email, password_hash) VALUES (${name}, ${email}, ${passwordHash});`;
-    revalidatePath('/api/user/get'); 
+    await sql`
+    INSERT INTO Users (name, email, password_hash) VALUES (${name}, ${email}, ${passwordHash});`;
+
+    const users = await sql`SELECT * FROM Users;`;
+    return NextResponse.json({ message: 'User created successfully', users }, { status: 201 });
+
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
- 
-  return NextResponse.json({ message: 'User created successfully' }, { status: 201 });
 }
