@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
- 
+
+export const revalidate = 1;
 export async function POST(request) {
   const { name, email, password } = await request.json();
  

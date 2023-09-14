@@ -1,6 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1;
 export async function GET(request) {
   try {
     const users = await sql`SELECT * FROM Users;`;
