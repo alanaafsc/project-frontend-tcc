@@ -1,6 +1,8 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1;
+export const dynamic = 'force-dynamic';
 export async function DELETE(request) {
   const requestBody = await request.text();
   const { id } = JSON.parse(requestBody);
@@ -13,14 +15,12 @@ export async function DELETE(request) {
     WHERE current_phase_id = ${id};
   `;
 
-    // Limpe as referências das atividades associadas à fase
     await sql`
         UPDATE Activities
         SET phase_id = NULL
         WHERE phase_id = ${id};
       `;
 
-    // Exclua a fase
     const phaseResult = await sql`
       DELETE FROM Phases
       WHERE id = ${id}

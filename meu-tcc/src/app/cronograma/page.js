@@ -16,7 +16,6 @@ const Cronograma = () => {
     const [projectData, setProjectData] = useState([]);
 
     useEffect(() => {
-        // Realize a solicitação à API para buscar os dados do banco de dados
         fetch('/api/projects/get')
             .then((response) => response.json())
             .then((data) => {
@@ -28,17 +27,13 @@ const Cronograma = () => {
     }, []);
 
     const getListData = (value) => {
-        // Converter a data 'value' do calendário para um formato de string correspondente
         const formattedValueDate = `${value.year()}-${(value.month() + 1).toString().padStart(2, '0')}-${value.date().toString().padStart(2, '0')}`;
 
-        // Aqui você pode mapear os dados do projeto para criar eventos com base no prazo inicial e final
         const listData = projectData
             .filter((project) => {
-                // Converter as datas do banco de dados para strings no mesmo formato
                 const startDate = project.prazo_inicial.split('T')[0];
                 const endDate = project.prazo_final.split('T')[0];
 
-                // Realizar a comparação entre datas
                 return startDate <= formattedValueDate && formattedValueDate <= endDate;
             })
             .map((project) => ({

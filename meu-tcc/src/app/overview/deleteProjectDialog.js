@@ -34,11 +34,10 @@ export default function DeleteProjectDialog({ open, onClose, projects, onDelete 
             });
     
             if (response.ok) {
-                onDelete(selectedProjectId); // Remova o projeto excluído da lista local
+                onDelete(selectedProjectId);
                 handleClose();
-                window.location.reload(); // Recarregue a página para refletir as atualizações
+                window.location.reload(); 
             } else {
-                // Trate o erro aqui, se necessário
             }
         } catch (error) {
             console.error('Error deleting project:', error);
@@ -53,7 +52,7 @@ export default function DeleteProjectDialog({ open, onClose, projects, onDelete 
                     <DialogContentText>
                         Escolha o projeto que deseja excluir.
                     </DialogContentText>
-                    <Select // Use o componente Select em vez do MenuItem
+                    <Select 
                         value={selectedProjectId}
                         onChange={handleProjectChange}
                         fullWidth

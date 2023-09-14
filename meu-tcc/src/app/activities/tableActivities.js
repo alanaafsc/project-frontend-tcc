@@ -49,24 +49,7 @@ const TableLayout = () => {
         fetchData();
     }, []);
 
-    // const handleAddDialogOpen = () => {
-    //     setIsAddDialogOpen(true);
-    // };
-
-    // const handleAddDialogClose = () => {
-    //     setIsAddDialogOpen(false);
-    // };
-
-    // const handleAddActivity = (newActivityData) => {
-    //     // Atualize o estado com os dados da nova atividade
-    //     setAtividadesData([...atividadesData, newActivityData]);
-
-    //     // Recarregue a página usando window.location.reload()
-    //     window.location.reload();
-    // };
-
     useEffect(() => {
-        // Realize a solicitação à API para buscar os dados do banco de dados
         fetch('/api/activities/get')
             .then((response) => response.json())
             .then((data) => {
@@ -89,9 +72,8 @@ const TableLayout = () => {
                     dataIndex="phase_id"
                     key="phase_id"
                     render={(phaseId) => {
-                        // Encontre a fase correspondente com base no ID da fase
                         const phase = phaseData.find((phase) => phase.id === phaseId);
-                        return phase ? phase.name : 'N/A'; // Mostra o nome da fase ou 'N/A' se não encontrado
+                        return phase ? phase.name : 'N/A'; 
                     }}
                 />
                 <Column
@@ -99,18 +81,16 @@ const TableLayout = () => {
                     dataIndex="phase_id"
                     key="phase_id"
                     render={(phaseId) => {
-                        // Encontre a fase correspondente com base no ID da fase
                         const phase = phaseData.find((phase) => phase.id === phaseId);
                         if (!phase) {
                             return 'Fase não encontrada';
                         }
                 
-                        // Verifique se o project_id não é nulo
                         if (phase.project_id === null) {
-                            return 'N/A'; // Ou qualquer outra mensagem que você preferir
+                            return 'N/A'; 
                         }
                 
-                        return phase.projectName; // Mostra o nome do projeto
+                        return phase.projectName; 
                     }}
                 />
 
@@ -127,7 +107,7 @@ const TableLayout = () => {
                         } else if (status === 'Atrasado') {
                             color = 'red';
                         } else {
-                            color = 'default'; // Cor padrão para outros estados
+                            color = 'default'; 
                         }
                         return <Tag color={color}>{status}</Tag>;
                     }}

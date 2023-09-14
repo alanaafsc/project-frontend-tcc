@@ -37,7 +37,6 @@ const EditDialogAtividades = ({ open, onClose, phaseId }) => {
     const selectedActivityId = event.target.value;
     setSelectedActivity(selectedActivityId);
 
-    // Busque os detalhes da atividade selecionada e preencha o formulário
     fetch(`/api/activities/get/activity?activity=${selectedActivityId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -53,7 +52,6 @@ const EditDialogAtividades = ({ open, onClose, phaseId }) => {
   const handleFieldChange = (field, value) => {
     let newValue = value;
 
-    // Verifique se o campo é uma data e converta para dayjs, se necessário
     if (field === 'prazo_inicial' || field === 'prazo_final') {
       newValue = dayjs(value);
     }
@@ -63,7 +61,6 @@ const EditDialogAtividades = ({ open, onClose, phaseId }) => {
       [field]: newValue,
     }));
 
-    console.log(activityDetails)
   };
 
   const handleSave = async () => {
@@ -85,9 +82,7 @@ const EditDialogAtividades = ({ open, onClose, phaseId }) => {
       });
 
       if (response.ok) {
-        // Trate a resposta da API, se necessário
-        console.log('Atividade editada com sucesso!');
-        onClose(); // Feche o diálogo após a edição bem-sucedida
+        onClose(); 
         window.location.reload();
       } else {
         console.error('Error editing activity:', response.statusText);

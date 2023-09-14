@@ -44,7 +44,7 @@ export default function FormDialogAddFase({ open, onClose, onAdd, projectId }) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name: faseData.name, // Use o valor do campo de nome
+                    name: faseData.name, 
                     description: faseData.description,
                     project_id: projectId,
                     prazo_inicial: faseData.prazo_inicial.toISOString().split('T')[0],
@@ -61,7 +61,6 @@ export default function FormDialogAddFase({ open, onClose, onAdd, projectId }) {
                 window.location.reload();
 
             } else {
-                // Trate o erro aqui, se necessário
             }
         } catch (error) {
             console.error('Error creating phase:', error);

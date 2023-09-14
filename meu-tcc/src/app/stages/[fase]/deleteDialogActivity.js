@@ -47,9 +47,8 @@ export default function DeleteActivityDialog({ open, onClose, phaseId }) {
     
             if (response.ok) {
                 handleClose();
-                window.location.reload(); // Recarregue a página para refletir as atualizações
+                window.location.reload(); 
             } else {
-                // Trate o erro aqui, se necessário
             }
         } catch (error) {
             console.error('Error deleting activity:', error);
@@ -64,7 +63,7 @@ export default function DeleteActivityDialog({ open, onClose, phaseId }) {
                     <DialogContentText>
                         Escolha a atividade que deseja excluir.
                     </DialogContentText>
-                    <Select // Use o componente Select em vez do MenuItem
+                    <Select 
                         value={selectedActivityId}
                         onChange={handleActivityChange}
                         fullWidth

@@ -25,10 +25,9 @@ export default function PageOverview() {
     const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-    const [projects, setProjects] = useState([]); // Estado para armazenar a lista de projetos
+    const [projects, setProjects] = useState([]);
 
     useEffect(() => {
-        // Recupera a lista de projetos da API ao carregar a página
         fetch('/api/projects/get')
             .then(response => response.json())
             .then(async (data) => {
@@ -44,7 +43,6 @@ export default function PageOverview() {
                         return project;
                     }));
                     setProjects(updatedProjects);
-                    console.log(updatedProjects)
                 }
             })
             .catch(error => {
@@ -68,8 +66,6 @@ export default function PageOverview() {
         setIsAddDialogOpen(false);
         setIsEditDialogOpen(false);
         setIsDeleteDialogOpen(false);
-        // Aqui você pode salvar o objeto projectData em algum estado ou realizar outra ação
-        // por exemplo, setProject(projectData) ou enviar para o backend
     };
 
     const handleDelete = async (projectId) => {
@@ -82,15 +78,9 @@ export default function PageOverview() {
     };
 
     const handleProjectAdd = (newProject) => {
-        // Aqui você pode atualizar a lista de projetos com o novo projeto
-        console.log('Novo projeto criado:', newProject);
-        // Atualize a lista de projetos com o novo projeto
         setProjects((prevProjects) => [...prevProjects, newProject]);
 
-        // Feche o diálogo de adição de projeto
         handleCloseDialogs();
-
-        // Recarregue a página após adicionar o projeto
         window.location.reload();
     };
 

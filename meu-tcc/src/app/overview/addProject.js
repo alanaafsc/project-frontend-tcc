@@ -21,7 +21,7 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
         name: '',
         description: '',
         currentPhaseId: '',
-        prazo_inicial: dayjs(), // Use dayjs para a data inicial
+        prazo_inicial: dayjs(), 
         prazo_final: dayjs(),
         phases: [],
     });
@@ -48,12 +48,11 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
     };
 
     const handleClose = () => {
-        // Limpe os campos do estado projectData
         setProjectData({
             name: '',
             description: '',
             currentPhaseId: '',
-            prazo_inicial: dayjs(), // Use dayjs para a data inicial
+            prazo_inicial: dayjs(), 
             prazo_final: dayjs(),
             phases: [],
         });
@@ -63,7 +62,7 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
     const handleCreateProject = async () => {
         try {
             const response = await fetch('/api/projects/add', {
-                method: 'POST', // Correção: Usar o método POST
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -71,19 +70,19 @@ export default function FormDialogAddProject({ open, onClose, onAdd }) {
                     name: projectData.name,
                     description: projectData.description,
                     currentPhaseId: projectData.currentPhaseId,
-                    prazo_inicial: projectData.prazo_inicial.toISOString().split('T')[0], // Converter a data em string
-                    prazo_final: projectData.prazo_final.toISOString().split('T')[0], // Converter a data em string
-                    phasesToAdd: projectData.phases, // Correção: Enviar o array de fases
+                    prazo_inicial: projectData.prazo_inicial.toISOString().split('T')[0], 
+                    prazo_final: projectData.prazo_final.toISOString().split('T')[0], 
+                    phasesToAdd: projectData.phases, 
                 }),
             });
 
             if (response.ok) {
                 const data = await response.json();
-                const newProject = data.newProject; // Obtenha o novo projeto do objeto retornado
-                onAdd(newProject); // Chamando a função onAdd com o novo projeto criado
-                onClose(); // Fechando o diálogo após a adição bem-sucedida
+                const newProject = data.newProject; 
+                onAdd(newProject); 
+                onClose(); 
             } else {
-                // Trate o erro aqui, se necessário
+            
             }
         } catch (error) {
             console.error('Error creating project:', error);

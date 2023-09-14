@@ -55,7 +55,7 @@ const columns = [
             } else if (status === 'Atrasado') {
                 color = 'red';
             } else {
-                color = 'default'; // Cor padrão para outros estados
+                color = 'default'; 
             }
 
             return <Tag color={color}>{status}</Tag>;
@@ -64,24 +64,16 @@ const columns = [
 ];
 
 const TableLayout = ( {projects} ) => {
-    const [projectsData, setProjectsData] = useState([]); // Estado para armazenar dados dos projetos
-
-    // useEffect(() => {
-    //     // Recupera a lista de projetos da API ao carregar a página
-
-
-    //     setProjectsData(data);
-    //     console.log(projectsData)
-    // }, []);
+    const [projectsData, setProjectsData] = useState([]);
 
     const data = projects.map(project => ({
         key: project.id.toString(),
         projetos: project.name,
         descricao: project.description,
-        faseatual: project.current_phase_name, // Substitua pelo valor correto
-        datainicial: project.prazo_inicial, // Substitua pelo campo correto da data inicial no seu objeto
+        faseatual: project.current_phase_name, 
+        datainicial: project.prazo_inicial, 
         datafinal: project.prazo_final,
-        status: 'Não iniciado', // Substitua pelo valor correto
+        status: 'Não iniciado', 
     }));
 
     return <Table columns={columns} dataSource={data} />;

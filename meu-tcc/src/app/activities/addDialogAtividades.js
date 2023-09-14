@@ -17,7 +17,6 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
     });
 
     useEffect(() => {
-        // Carregar a lista de projetos ao abrir o diálogo
         fetch('/api/projects/get')
             .then((response) => response.json())
             .then((data) => {
@@ -31,7 +30,6 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
     }, []);
 
     const handleFetchActivities = async (selectedProject) => {
-        console.log('selectedProject ', selectedProject);
         try {
             const response = await fetch(`/api/activities/get/project?projectId=${selectedProject}`, {
                 method: 'GET',
@@ -43,9 +41,8 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
             if (response.ok) {
                 const data = await response.json();
                 const phases = data.phases.rows;
-                console.log('Phases: ', phases);
                 if (phases) {
-                    setPhases(phases); // Atualize o estado com as fases da API
+                    setPhases(phases);
                 }
             }
         } catch (error) {
@@ -77,18 +74,15 @@ const AddDialogAtividades = ({ open, onClose, onAdd }) => {
               description: activityData.descricao,
               status: activityData.status,
               projectId: selectedProject,
-              phaseId: selectedPhase, // Certifique-se de que a chave seja 'phaseId' para corresponder à rota existente.
+              phaseId: selectedPhase,
             }),
           });
       
           if (response.ok) {
             const data = await response.json();
-            // Você pode lidar com a resposta da API aqui, se desejar
-            // Por exemplo, atualizar o estado da lista de atividades.
-            onAdd(data.activityResult); // Chama a função `onAdd` passando os dados da atividade.
+            onAdd(data.activityResult);
             onClose();
           } else {
-            // Lidar com erros da API, se houver algum
             console.error('Error adding activity:', response.statusText);
           }
         } catch (error) {

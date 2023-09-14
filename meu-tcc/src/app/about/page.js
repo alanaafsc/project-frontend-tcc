@@ -21,10 +21,10 @@ export default function About() {
                 <div className={styles.boxContainer}>
                     <div className={styles.leftBox}>
                         <img
-                            src="/pana.svg" // Caminho para a imagem na pasta public
+                            src="/pana.svg" 
                             alt="Ícone"
-                            width={389} // Largura do ícone
-                            height={394} // Altura do ícone
+                            width={389} 
+                            height={394} 
                         />
                     </div>
                     <div className={styles.rightBox}>

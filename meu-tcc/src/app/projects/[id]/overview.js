@@ -10,17 +10,15 @@ const OverviewProject = ({ projectId }) => {
 
   useEffect(() => {
     if (projectId) {
-      // Realize uma solicitação para buscar os detalhes do projeto com base no projectId
       fetch(`/api/projects/get/project?projectId=${projectId}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.project.rows) {
             setProjectData(data.project.rows[0]);
-            // Agora, vamos buscar o nome da fase com base no ID da fase atual
             fetch(`/api/phase/get/phase?phaseId=${data.project.rows[0].current_phase_id}`)
               .then((phaseResponse) => phaseResponse.json())
               .then((phaseData) => {
-                setPhaseName(phaseData.phase.rows[0].name); // Definir o nome da fase no estado
+                setPhaseName(phaseData.phase.rows[0].name); 
               })
               .catch((phaseError) => console.error('Erro ao buscar a fase:', phaseError));
           }
@@ -29,7 +27,6 @@ const OverviewProject = ({ projectId }) => {
     }
   }, [projectId]);
 
- //  Verifique se os dados do projeto estão carregados ou ainda são nulos
   if (!projectData || !phaseName) {
     return <div>Carregando...</div>;
   }

@@ -18,7 +18,6 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 
 const EditDialog = ({ open, onClose, projectId, selectedPhaseId }) => {
-    console.log('projectId', projectId)
     const [phaseData, setPhaseData] = useState({
         name: '',
         description: '',
@@ -27,12 +26,11 @@ const EditDialog = ({ open, onClose, projectId, selectedPhaseId }) => {
     });
 
     useEffect(() => {
-        // Realize uma solicitação para buscar os dados da fase com base no selectedPhaseId
         if (selectedPhaseId) {
             fetch(`/api/phase/get/phase?phaseId=${selectedPhaseId}`)
                 .then((response) => response.json())
                 .then((data) => {
-                    const phase = data.phase.rows[0]; // Certifique-se de que o objeto retornado corresponda à estrutura de dados da fase
+                    const phase = data.phase.rows[0]; 
                     setPhaseData({
                         name: phase.name,
                         description: phase.description,
@@ -47,7 +45,6 @@ const EditDialog = ({ open, onClose, projectId, selectedPhaseId }) => {
     const handleFieldChange = (field, value) => {
         let newValue = value;
 
-        // Verifique se o campo é uma data e converta para dayjs, se necessário
         if (field === 'prazo_inicial' || field === 'prazo_final') {
             newValue = dayjs(value);
         }
@@ -80,7 +77,6 @@ const EditDialog = ({ open, onClose, projectId, selectedPhaseId }) => {
                 window.location.reload();
 
             } else {
-                // Trate o erro aqui, se necessário
             }
         } catch (error) {
             console.error('Error editing phase:', error);

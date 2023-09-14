@@ -16,7 +16,6 @@ const TableLayout = ({ phaseId }) => {
     const [activities, setActivities] = React.useState([]);
 
     useEffect(() => {
-        // Realize uma solicitação para buscar as atividades com base no phaseId
         if (phaseId) {
             fetch(`/api/activities/get/fase?phaseId=${phaseId}`)
                 .then((response) => response.json())
@@ -61,7 +60,7 @@ const TableLayout = ({ phaseId }) => {
                 } else if (status === 'Atrasado') {
                     color = 'red';
                 } else {
-                    color = 'default'; // Cor padrão para outros estados
+                    color = 'default'; 
                 }
 
                 return <Tag color={color}>{status}</Tag>;

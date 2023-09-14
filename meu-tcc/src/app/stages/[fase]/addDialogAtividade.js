@@ -23,7 +23,6 @@ const AddDialogAtividades = ({ open, onClose }) => {
     });
 
     useEffect(() => {
-        // Carregar a lista de projetos ao abrir o diálogo
         fetch('/api/projects/get')
             .then((response) => response.json())
             .then((data) => {
@@ -37,7 +36,6 @@ const AddDialogAtividades = ({ open, onClose }) => {
     }, []);
 
     const handleFetchActivities = async (selectedProject) => {
-        console.log('selectedProject ', selectedProject);
         try {
             const response = await fetch(`/api/activities/get/project?projectId=${selectedProject}`, {
                 method: 'GET',
@@ -49,9 +47,8 @@ const AddDialogAtividades = ({ open, onClose }) => {
             if (response.ok) {
                 const data = await response.json();
                 const phases = data.phases.rows;
-                console.log('Phases: ', phases);
                 if (phases) {
-                    setPhases(phases); // Atualize o estado com as fases da API
+                    setPhases(phases);
                 }
             }
         } catch (error) {
@@ -66,7 +63,6 @@ const AddDialogAtividades = ({ open, onClose }) => {
     const handleInputChange = (field, value) => {
         let newValue = value;
 
-        // Verifique se o campo é uma data e converta para dayjs, se necessário
         if (field === 'prazo_inicial' || field === 'prazo_final') {
             newValue = dayjs(value);
         }

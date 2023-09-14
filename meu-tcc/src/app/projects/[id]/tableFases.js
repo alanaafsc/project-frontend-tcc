@@ -14,17 +14,15 @@ import EditDialog from './editFase';
 
 const TableLayout = ({ projectId }) => {
   const [fases, setFases] = useState([]);
-  const [selectedPhaseId, setSelectedPhaseId] = useState(null); // Estado para controlar o id da fase selecionada
+  const [selectedPhaseId, setSelectedPhaseId] = useState(null); 
   const [isEditDialogVisible, setEditDialogVisible] = useState(false);
 
   useEffect(() => {
-    // Realize uma solicitação para buscar as fases com base no projectId
     if (projectId) {
       fetch(`/api/phase/get/projectId?projectId=${projectId}`)
         .then((response) => response.json())
         .then((data) => {
           setFases(data.phases.rows);
-          console.log(data.phases.rows)
         })
         .catch((error) => console.error('Erro ao buscar as fases:', error));
     }
@@ -44,9 +42,8 @@ const TableLayout = ({ projectId }) => {
 
       if (response.ok) {
         setFases((prevFases) => prevFases.filter((fase) => fase.id !== record.id));
-        window.location.reload(); // Recarregue a página para refletir as atualizações
+        window.location.reload();
       } else {
-        // Trate o erro aqui, se necessário
       }
     } catch (error) {
       console.error('Error deleting phase:', error);
@@ -82,13 +79,13 @@ const TableLayout = ({ projectId }) => {
       title: 'Data inicial',
       dataIndex: 'prazo_inicial',
       key: 'prazo_inicial',
-      render: (prazo_inicial) => dayjs(prazo_inicial).format('DD/MM/YY'), // Formatando a data
+      render: (prazo_inicial) => dayjs(prazo_inicial).format('DD/MM/YY'),
     },
     {
       title: 'Data final',
       dataIndex: 'prazo_final',
       key: 'prazo_final',
-      render: (prazo_final) => dayjs(prazo_final).format('DD/MM/YY'), // Formatando a data
+      render: (prazo_final) => dayjs(prazo_final).format('DD/MM/YY'), 
     },
     {
       title: 'Ações',
@@ -109,7 +106,7 @@ const TableLayout = ({ projectId }) => {
             type="text"
             size="small"
             icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record.id)} // Passando o ID da fase para handleDelete
+            onClick={() => handleDelete(record.id)} 
           >
             Excluir
           </Button>
@@ -132,5 +129,5 @@ const TableLayout = ({ projectId }) => {
     </>
   );
 };
-// const TableLayout = () => <Table columns={columns} dataSource={} style={{ width: '990px' }} />;
+
 export default TableLayout;

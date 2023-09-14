@@ -14,7 +14,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight'; // Importe o ícone ArrowRight do Material-UI
+import ArrowRightIcon from '@mui/icons-material/ArrowRight'; 
 import { MoreVert } from '@mui/icons-material';
 import React, { useEffect, useState } from 'react';
 
@@ -27,18 +27,15 @@ const ListTasks = ({ projectId }) => {
 
   useEffect(() => {
     if (projectId) {
-      // Realize uma solicitação para buscar os detalhes do projeto com base no projectId
       fetch(`/api/projects/get/project?projectId=${projectId}`)
         .then((response) => response.json())
         .then((data) => {
           if (data.project.rows) {
             setProjectData(data.project.rows[0]);
-            // Agora, vamos buscar o nome da fase com base no ID da fase atual
             fetch(`/api/phase/get/phase?phaseId=${data.project.rows[0].current_phase_id}`)
               .then((phaseResponse) => phaseResponse.json())
               .then((phaseData) => {
                 setPhaseName(phaseData.phase.rows[0].name); 
-                console.log(phaseData.phase.rows[0].id)
                 fetch(`/api/activities/get/fase?phaseId=${phaseData.phase.rows[0].id}`)
                   .then((activitiesResponse) => activitiesResponse.json())
                   .then((activities) => {

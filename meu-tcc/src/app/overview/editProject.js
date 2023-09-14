@@ -45,7 +45,6 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
     const handleFieldChange = (field, value) => {
         let newValue = value;
 
-        // Verifique se o campo é uma data e converta para dayjs, se necessário
         if (field === 'prazo_inicial' || field === 'prazo_final') {
             newValue = dayjs(value);
         }
@@ -91,7 +90,6 @@ export default function EditProjectDialog({ open, onClose, projects, setProjects
 
                 onClose();
             } else {
-                // Trate o erro aqui, se necessário
             }
         } catch (error) {
             console.error('Error editing project:', error);

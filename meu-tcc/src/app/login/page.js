@@ -36,8 +36,6 @@ export default function Login() {
     const handleMouseDownPassword = (event) => event.preventDefault();
 
     const handleLogin = async () => {
-        // Check if user exists (Replace this with your API call)
-        // Assume the API endpoint is http://localhost:3000/api/user/get
         try {
             const response = await fetch('/api/user/get');
             const data = await response.json();
@@ -79,10 +77,10 @@ export default function Login() {
                                 </Typography>
                                 <Button variant="outlined" style={{ gap: '13px', marginTop: '10px', width: '300px', marginBottom: '25px' }}>
                                     <img
-                                        src="/SVG.svg" // Caminho para a imagem na pasta public
+                                        src="/SVG.svg"
                                         alt="Ícone"
-                                        width={20} // Largura do ícone
-                                        height={20} // Altura do ícone
+                                        width={20} 
+                                        height={20} 
                                         style={{ marginBottom: '4px' }}
                                     />
                                     Entre com o Google
@@ -95,7 +93,7 @@ export default function Login() {
                                     label="E-mail"
                                     margin="dense"
                                     sx={{ width: '350px' }}
-                                    value={email} // Valor atual do estado 'email'
+                                    value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                                 <FormControl sx={{ m: 1, width: '350px' }} variant="outlined">
@@ -116,8 +114,8 @@ export default function Login() {
                                             </InputAdornment>
                                         }
                                         label="Password"
-                                        value={password} // Valor atual do estado 'password'
-                                        onChange={(e) => setPassword(e.target.value)} // Atualiza o estado 'password' quando o valor muda
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)} 
                                     />
                                 </FormControl>
                                 {!userExists && (

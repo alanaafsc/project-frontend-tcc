@@ -1,13 +1,14 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1;
+export const dynamic = 'force-dynamic';
 export async function PUT(request) {
   const requestBody = await request.text();
   const { id, name, description, currentPhaseId, prazo_inicial, prazo_final, phasesToAdd } = JSON.parse(requestBody);
 
   try {
 
-    // Atualize o projeto
     const projectResult = await sql`
       UPDATE Projects
       SET name = ${name}, description = ${description}, current_phase_id = ${currentPhaseId}, prazo_inicial = ${prazo_inicial}, prazo_final = ${prazo_final}
@@ -15,7 +16,6 @@ export async function PUT(request) {
       RETURNING *;
     `;
 
-    // Atualize as fases relacionadas ao projeto
     if (phasesToAdd && phasesToAdd.length > 0) {
       await sql`
         UPDATE Phases

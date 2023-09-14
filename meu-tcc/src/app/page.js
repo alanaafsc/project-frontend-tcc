@@ -24,10 +24,10 @@ export default function Home() {
         <div className={styles.leftcolumn}>
           <div className={styles.topbox}>
             <img
-              src="/Illustration.svg" // Caminho para a imagem na pasta public
+              src="/Illustration.svg" 
               alt="Ícone"
-              width={389} // Largura do ícone
-              height={394} // Altura do ícone
+              width={389} 
+              height={394} 
             />
           </div>
           <div className={styles.bottombox}>

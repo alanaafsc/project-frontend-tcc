@@ -17,15 +17,11 @@ export default function TableAtividade() {
             <Card
                 title="Atividade atual"
                 bordered={false}
-                // style={{
-                //     width: 990,
-                // }}
             >
                 <Tag color="#f50">Projeto Informacional</Tag>
                 <h2>Atividade de tal projeto</h2>
                 <Collapse
                     size="small"
-                    // style={{ width: 950 }}
                     items={[
                         {
                             key: '1',

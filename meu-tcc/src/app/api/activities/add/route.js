@@ -1,11 +1,12 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1;
+export const dynamic = 'force-dynamic';
 export async function POST(request) {
   const requestBody = await request.text();
   const { name, description, status, projectId, phaseId, prazo_inicial, prazo_final } = JSON.parse(requestBody);
   try {
-    // Verifique se o projeto e a fase fornecidos são válidos antes de prosseguir
     const project = await sql`SELECT * FROM Projects WHERE id = ${projectId}`;
     if (!project.rows[0]) {
       return NextResponse.json({ error: 'Invalid project ID' }, { status: 400 });
@@ -16,7 +17,6 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid phase ID for the selected project' }, { status: 400 });
     }
 
-    // Adicione a atividade com os dados fornecidos
     const activityResult = await sql`
       INSERT INTO Activities (name, description, status, phase_id, prazo_inicial, prazo_final)
       VALUES (${name}, ${description}, ${status}, ${phaseId}, ${prazo_inicial}, ${prazo_final})

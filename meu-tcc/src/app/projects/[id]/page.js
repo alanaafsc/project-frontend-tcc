@@ -4,8 +4,8 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Add } from '@mui/icons-material'; // Importe o ícone Add do Material-UI
-import { Card, CardActionArea, Divider, Fab, Stack } from '@mui/material'; // Importe o Fab do Material-UI
+import { Add } from '@mui/icons-material';  
+import { Card, CardActionArea, Divider, Fab, Stack } from '@mui/material';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/navigation';
@@ -73,7 +73,7 @@ export default function Projects({ params }) {
                                 size="medium"
                                 aria-label="add"
                                 onClick={() => setDialogOpen(true)}
-                                style={{ position: 'absolute', right: 24, bottom: 50 }} // Ajuste o posicionamento conforme necessário
+                                style={{ position: 'absolute', right: 24, bottom: 50 }}
                             >
                                 <Add />
                             </Fab>
@@ -85,8 +85,6 @@ export default function Projects({ params }) {
                 open={isDialogOpen}
                 onClose={() => setDialogOpen(false)}
                 onAdd={(newPhase) => {
-                    // Aqui você pode adicionar a lógica para atualizar a lista de fases ou realizar outras ações após a adição da fase
-                    console.log('Nova fase adicionada:', newPhase);
                 }}
                 projectId={id}
             />

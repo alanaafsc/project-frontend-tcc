@@ -1,8 +1,10 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server';
 
+export const revalidate = 1;
+export const dynamic = 'force-dynamic';
 export async function POST(request) {
-  const requestBody = await request.text(); // Lê o corpo da solicitação como texto
+  const requestBody = await request.text(); 
   const { name, description, project_id, prazo_inicial, prazo_final } = JSON.parse(requestBody);
 
   try {

@@ -10,7 +10,6 @@ export async function POST(request) {
   try {
     if (!name || !email || !password) throw new Error('Name, email, and password are required');
     
-    // Encriptar a senha antes de armazenar no banco de dados
     const passwordHash = await bcrypt.hash(password, 10);
     
     // Inserir o usuário na tabela

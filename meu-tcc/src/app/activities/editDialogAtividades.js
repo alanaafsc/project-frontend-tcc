@@ -23,15 +23,12 @@ const EditDialogAtividades = ({ open, onClose, activityId }) => {
     const [statusOptions, setStatusOptions] = useState(['Em andamento', 'Concluído', 'Atrasado']);
     const [phaseOptions, setPhaseOptions] = useState([]);
 
-    // Carregar os dados da atividade com base no activityId ao abrir o diálogo
     useEffect(() => {
         if (open && activityId) {
-            // Realize uma solicitação para buscar os dados da atividade com base no activityId
             fetch(`/api/activities/get/activity?activity=${activityId}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.activity.rows) {
-                        console.log(data.activity.rows[0])
                         setActivityData(data.activity.rows[0]);
                     }
                 })
@@ -39,10 +36,8 @@ const EditDialogAtividades = ({ open, onClose, activityId }) => {
         }
     }, [open, activityId]);
 
-     // Carregar opções de fases disponíveis com base no projeto associado à atividade
      useEffect(() => {
         if (activityData.phase_id) {
-            // Realize uma solicitação para buscar as fases associadas ao projeto (com base no phase_id)
             fetch(`/api/phase/get/project?phaseId=${activityData.phase_id}`)
                 .then((response) => response.json())
                 .then((data) => {
@@ -80,11 +75,9 @@ const EditDialogAtividades = ({ open, onClose, activityId }) => {
             });
 
             if (response.ok) {
-                // Lida com a resposta da API após a edição, se necessário
-                onClose(); // Fecha o diálogo após a edição bem-sucedida
+                onClose(); 
                 window.location.reload();
             } else {
-                // Lida com erros da API, se houver algum
                 console.error('Erro ao editar atividade:', response.statusText);
             }
         } catch (error) {

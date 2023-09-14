@@ -32,10 +32,10 @@ export default function PageLayout() {
             <MenuIcon />
           </IconButton>
           <img
-            src="/main_icon.svg" // Caminho para a imagem na pasta public
+            src="/main_icon.svg" 
             alt="Ícone"
-            width={57} // Largura do ícone
-            height={57} // Altura do ícone
+            width={57} 
+            height={57} 
           />
           <div className={styles.myButtons}>
             <Button type="button" onClick={() => router.push('/')} color="inherit">INÍCIO</Button>
