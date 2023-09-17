@@ -26,7 +26,7 @@ export default function PDPphases() {
                     <Divider variant="middle" />
                 </div>
                 <Card className={styles.boxContainer} elevation={3}>
-                    <CardContent>
+                    <CardContent sx={{ marginBottom: '-250px' }}>
                         <Typography variant="h4" gutterBottom>
                             <LightbulbIcon color="primary" fontSize="large" sx={{ marginRight: 1 }} />
                             O que é?
@@ -41,10 +41,12 @@ export default function PDPphases() {
                             O PDP envolve várias etapas sequenciais, cada uma com um foco específico, incluindo pesquisa de mercado, geração de ideias, design conceitual, prototipagem, desenvolvimento, testes, validações e lançamento. As etapas exatas podem variar dependendo da empresa, do setor e das práticas adotadas, mas o PDP geralmente abrange as seguintes áreas:
                         </Typography>
                     </CardContent>
-                    <CardMedia
-                        sx={{ height: 1150, width: 1150 }}
-                        image="/div.svg"
-                        title="Fases do PDP"
+                    <img
+                        src="/div.svg"
+                        alt="Fases do PDP"
+                        style={{display: 'flex', justifyContent: 'start', alignItems: 'start'}}
+                        width={1200}
+                        height={1100}
                     />
                 </Card>
             </div>
